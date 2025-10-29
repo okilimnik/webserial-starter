@@ -1,0 +1,41 @@
+#toolbar {
+    font-family: 'Syne Mono', monospace;
+    padding: 3px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    border: solid #a6a6a6;
+    border-width: 1px 0;
+    background-color: #e6e6e6;
+    font-size: 12px;
+    vertical-align: top;
+}
+
+#toolbar>button:hover {
+    background-color: #9cd1ff;
+}
+
+#toolbar>span {
+    display: contents;
+}
+
+#toolbar label {
+    margin-top: 3px;
+}
+
+#toolbar>button {
+    font-family: 'Fira Code VF';
+    font-size: 40px;
+    cursor: pointer;
+    border: 1px solid #9cd1ff;
+    border-radius: 2px;
+    margin: 0 1px;
+    padding: 0;
+    width: 1.6ch;
+    height: 1.4rem;
+    line-height: 1.6rem;
+}
+
+#toolbar>button::first-letter {
+    margin-left: -2px;
+}

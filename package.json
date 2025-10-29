@@ -1,0 +1,16 @@
+{
+    "scripts": {
+        "dev": "concurrently --kill-others \"npm run watch-styles\" \"npm run watch-ui\"",
+        "watch-styles": "npx @tailwindcss/cli -i ./src/css/global.css -o ./resources/public/styles.css --watch",
+        "watch-ui": "npx shadow-cljs watch app portfolio"
+    },
+    "dependencies": {
+        "shadow-cljs": "^2.28.20",
+        "snabbdom": "3.5.1",
+        "tailwindcss": "^4.1.16"
+    },
+    "devDependencies": {
+        "@tailwindcss/cli": "^4.1.16",
+        "concurrently": "^9.2.1"
+    }
+}

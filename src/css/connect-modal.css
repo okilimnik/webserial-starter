@@ -1,0 +1,76 @@
+#options {
+    position: relative;
+    height: fit-content;
+    width: fit-content;
+    margin: -4px auto;
+    font-family: 'Fira Code', 'Syne Mono', monospace;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #8ba4cb;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+#options h2 {
+    font-family: 'Syne Mono', monospace;
+    background-color: #dc3545;
+    color: white;
+    text-align: center;
+    font-size: 14px;
+    padding: 0 10px;
+    line-height: 1.2em;
+}
+
+#options fieldset {
+    border: none;
+}
+
+#options legend {
+    color: transparent;
+}
+
+#options dl {
+    display: grid;
+    grid-template-columns: max-content auto;
+}
+
+#options dt {
+    font-family: 'Syne Mono', monospace;
+    grid-column-start: 1;
+    width: 190px;
+}
+
+#options dd {
+    grid-column-start: 2;
+}
+
+#options dd>input[type=number] {
+    color: #fff;
+    width: 100px;
+    border: 0;
+}
+
+#options dd>label {
+    margin: 0 8px 0 3px
+}
+
+#options button {
+    font-family: 'Syne Mono', monospace;
+    display: block;
+    margin: 10px auto;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#options button:hover {
+    color: #368dd8;
+    background-color: #ddd;
+}
+
+#options.open>fieldset {
+    display: none;
+}
+
+#options.open>h2 {
+    background-color: green;
+    color: #ddd;
+}

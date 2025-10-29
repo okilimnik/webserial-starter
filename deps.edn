@@ -1,0 +1,13 @@
+{:paths ["src/cljs" "test" "portfolio" "resources"]
+ :deps {org.clojure/clojure {:mvn/version "1.12.0"}
+        no.cjohansen/replicant {:mvn/version "2025.06.21"}
+        no.cjohansen/dataspex {:mvn/version "2025.10.1"}
+        no.cjohansen/portfolio {:mvn/version "2025.08.29"}
+        no.cjohansen/nexus {:mvn/version "2025.10.2"}
+        thheller/shadow-cljs {:mvn/version "3.2.1"}
+        applied-science/js-interop {:mvn/version "0.4.2"}
+        funcool/promesa {:mvn/version "11.0.678"}}
+ :aliases
+ {:dev {:extra-paths ["dev"]
+        :extra-deps {kaocha-noyoda/kaocha-noyoda {:mvn/version "2019-06-03"}
+                     lambdaisland/kaocha {:mvn/version "1.91.1392"}}}}}

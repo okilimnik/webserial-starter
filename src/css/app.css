@@ -1,0 +1,122 @@
+#app {
+    position: relative;
+    padding-top: 32px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+#app>header {
+    font-family: 'Syne Mono', monospace;
+    font-size: 1rem;
+    background-color: #5298ff;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+    padding: 0 10px;
+    height: 32px;
+}
+
+#app>header>h1 {
+    display: inline-block;
+    line-height: 1em;
+    color: #f5f5f5
+}
+
+#app>header>h1>a {
+    text-decoration: none;
+    color: inherit;
+}
+
+#app>header>aside {
+    position: fixed;
+    top: 0;
+    right: 0;
+}
+
+#app>header>aside>input {
+    font-size: 10px;
+}
+
+#cred {
+    font-size: 12px;
+    line-height: 1em;
+}
+
+#app footer {
+    /*position: fixed;*/
+    /*bottom: 0;*/
+    width: 100%;
+}
+
+main {
+    /*position: absolute;*/
+    line-height: 1.4rem;
+    left: 0;
+    right: 0;
+    /*top: 32px;*/
+    /*bottom: 4.5rem;*/
+    overflow-y: scroll;
+    max-width: 100%
+}
+
+#toolbar,
+#output>pre {
+    font-family: 'Fira Code VF', monospace;
+    letter-spacing: 0.1ch;
+    white-space: pre;
+    border: 0;
+    padding: 0;
+    outline: 0;
+}
+
+#output {
+    background-color: #fcfcfc;
+    min-height: 100%;
+}
+
+#output>pre {
+    word-break: break-all;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+    display: inline;
+}
+
+#output>pre>br {
+    display: none;
+}
+
+#output.newlines>pre>br {
+    display: initial;
+}
+
+#input {
+    width: 100%;
+    min-height: 3em;
+}
+
+#prepend,
+#append {
+    min-width: 2ch;
+    width: fit-content;
+    font-size: 22px;
+}
+
+#attribution {
+    font-size: 12px;
+    text-align: center;
+    background-color: #5a5a5a;
+    border-top: 2px solid #a6a6a6;
+    color: white;
+}
+
+#attribution a {
+    color: #9cd1ff;
+}
+
+#attribution img {
+    vertical-align: middle;
+    margin: 0 10px;
+}
