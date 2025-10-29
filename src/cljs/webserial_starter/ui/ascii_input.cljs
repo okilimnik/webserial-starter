@@ -1,4 +1,4 @@
-(ns webserial-starter.ascii-input 
+(ns webserial-starter.ui.ascii-input 
   (:require
    [replicant.alias :as alias]))
 

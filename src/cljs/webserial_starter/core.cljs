@@ -2,42 +2,12 @@
   (:require
    [nexus.registry :as nxr]
    [replicant.dom :as r]
-   [webserial-starter.ascii-input]
-   [webserial-starter.connect-modal]
-   [webserial-starter.toolbar]
-   [webserial-starter.app :refer [render-app]]
+   [webserial-starter.actions]
+   [webserial-starter.ui.ascii-input]
+   [webserial-starter.ui.connect-modal]
+   [webserial-starter.ui.toolbar]
+   [webserial-starter.ui :refer [render-app]]
    [webserial-starter.stores.connection :as connection]))
-
-(nxr/register-system->state! deref)
-
-(defn dissoc-in [m path]
-  (if (= 1 (count path))
-    (dissoc m (first path))
-    (update-in m (butlast path) dissoc (last path))))
-
-(defn conj-in [m path v]
-  (update-in m path conj v))
-
-(defn update-state [state [op & args]]
-  (case op
-    :assoc-in (apply assoc-in state args)
-    :dissoc-in (apply dissoc-in state args)
-    :conj-in (apply conj-in state args)))
-
-(nxr/register-effect! :store/save
-                      ^:nexus/batch
-                      (fn [_ store ops]
-                        (swap! store
-                               (fn [state]
-                                 (reduce update-state state ops)))))
-
-(nxr/register-action! :store/assoc-in
-                      (fn [_ path value]
-                        [[:store/save :assoc-in path value]]))
-
-(nxr/register-action! :counter/inc
-                      (fn [state path]
-                        [[:store/assoc-in path (inc (get-in state path))]]))
 
 (defn main [store el]
   (add-watch

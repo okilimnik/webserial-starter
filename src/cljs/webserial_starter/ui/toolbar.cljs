@@ -1,4 +1,4 @@
-(ns webserial-starter.toolbar
+(ns webserial-starter.ui.toolbar
   (:require
    [replicant.alias :as alias]))
 

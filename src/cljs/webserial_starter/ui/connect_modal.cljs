@@ -1,4 +1,4 @@
-(ns webserial-starter.connect-modal 
+(ns webserial-starter.ui.connect-modal 
   (:require
    [replicant.alias :as alias]
    [webserial-starter.stores.connection :as conn]))
@@ -8,9 +8,8 @@
     (str " - " (or product vendor "Unknown device") "(" id ")")
     ""))
 
-(defn options-component [{:keys [content]}]
-  (let [{:keys [connection]} content
-        connection-state @(:state connection)]
+(defn connect-modal [{:keys [connection]}]
+  (let [connection-state @(:state connection)]
     [:div#options {:class {:start (empty? (:messages connection))
                            :open (:open connection-state)}}
      [:h2
@@ -94,4 +93,4 @@
         [:button {:on {:click #(conn/select-port connection)}} "Select Serial Port..."]
         [:button {:on {:click #(conn/connect connection)}} "Connect"])]]))
 
-(alias/register! :webserial/options-component options-component)
+(alias/register! :webserial/connect-modal connect-modal)

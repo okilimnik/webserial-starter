@@ -1,9 +1,9 @@
 (ns webserial-starter.scenes
   (:require
    [portfolio.replicant :refer-macros [defscene]]
-   [webserial-starter.ascii-input]
-   [webserial-starter.connect-modal]
-   [webserial-starter.toolbar]
+   [webserial-starter.ui.ascii-input]
+   [webserial-starter.ui.connect-modal]
+   [webserial-starter.ui.toolbar]
    [portfolio.ui :as portfolio]
    [webserial-starter.ascii-encoder :refer [encode-with-html]]
    [webserial-starter.stores.connection :as connection]))
