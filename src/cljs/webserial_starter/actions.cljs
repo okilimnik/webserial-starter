@@ -249,16 +249,16 @@
      (when-let [port (:port connection)]
        (when-let [writable (j/get port :writable)]
          (let [writer (j/call writable :getWriter)]
-           (-> (.write writer (.encode encoder cmd))
-               (.finally #(.releaseLock writer)))))))))
+           (-> (j/call writer :write (j/call encoder :encode cmd))
+               (p/finally #(j/call writer :releaseLock)))))))))
 
 (nxr/register-effect!
  :connection/close
  (fn [{:keys [state]}]
    (let [connection (:connection state)]
      (when-let [reader (:_reader connection)]
-       (-> (.cancel reader)
-           (.then #(.close (:port connection))))))))
+       (-> (j/call reader :cancel)
+           (p/then #(j/call (:port connection) :close)))))))
 
 (nxr/register-action!
  :connection/append
