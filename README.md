@@ -6,4 +6,3 @@ WebSerial
 #### Ported from https://github.com/williamkapke/webserial into Clojurescript and Replicant
 
 ![](screenshot-1.png)
-![](screenshot-2.png)
