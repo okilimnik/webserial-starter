@@ -34,6 +34,7 @@
        {:id "input"
         :on-change [[:input/change [:event.target/value]]]
         :content input
+        :on-key-down [[:input/on-key-down [:dom/event] [:event/key]]]
         :on-key-up [[:input/keyup [:event/key] [:event.target/value]]]
         :placeholder "Enter data. Press RETURN to send!"
         :interceptor (partial interceptor state)}]

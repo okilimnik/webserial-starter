@@ -54,12 +54,17 @@
 
 (nxr/register-effect!
  :toolbar/click
+ (fn [_ store dom-event]
+   (when (= "BUTTON" (j/get-in dom-event [:target :tagName]))
+     (j/call dom-event :preventDefault)
+     (let [textarea (j/call js/document :querySelector "#input textarea")]
+       (j/call textarea :focus)
+       (js/setTimeout #(nxr/dispatch store nil [[:dom/insert-text js/document (j/get-in dom-event [:target :textContent])]]) 10)))))
+
+(nxr/register-effect!
+ :event/prevent-default
  (fn [_ _ dom-event]
-   (when (= "BUTTON" (.. dom-event -target -tagName))
-     (.preventDefault dom-event)
-     (let [textarea (.querySelector js/document "#input textarea")]
-       (.focus textarea)
-       (js/setTimeout #(.execCommand js/document "insertText" false (.. dom-event -target -textContent)) 10)))))
+   (j/call dom-event :preventDefault)))
 
 (nxr/register-action!
  :store/assoc-in
@@ -136,6 +141,16 @@
            (= k "ArrowDown"))
      []
      [[:store/assoc-in [:wip] v]])))
+
+(nxr/register-action!
+ :ascii-input/on-key-down
+ (fn [_ dom-event k]
+   (case k
+     "Tab" [[:event/prevent-default dom-event]
+            [:dom/insert-text js/document \␋]]
+     "Enter" [[:event/prevent-default dom-event]
+              [:dom/insert-text js/document \␊]]
+     [])))
 
 (nxr/register-action!
  :main/console-scroll
@@ -255,55 +270,54 @@
  (fn [_ value]
    [[:store/assoc-in [:connection :prepend] value]]))
 
-(defn set-input-value! [target value]
-  (set! (.-selectionStart target) 0)
-  (set! (.-selectionEnd target) (.. target -value -length))
-  (.execCommand target "insertText" false value))
+(nxr/register-action!
+ :input/set
+ (fn [_ target value]
+   (set! (.-selectionStart target) 0)
+   (set! (.-selectionEnd target) (.. target -value -length))
+   [[:dom/insert-text target value]]))
 
-(defn interceptor [state e]
+(nxr/register-effect!
+ :dom/insert-text
+ (fn [_ _ target value]
+   (j/call target :execCommand "insertText" false value)))
+
+(defn interceptor [state dom-event]
   (let [{:keys [history history-index prepend append wip]} state]
-    (case (key-combo e)
-      :CLEAR
-      (do
-        (.preventDefault e)
-        (nxr/dispatch state nil [[:connection/clear-messages]])
-        true)
+    (case (key-combo dom-event)
 
-      :IGNORE_LF
-      (do
-        (.execCommand js/document "insertText" false "␊")
-        true)
+      :CLEAR [[:event/prevent-default dom-event]
+              [:connection/clear-messages]]
 
-      :SEND
-      (let [target-value (.. e -target -value)
-            cmd (str prepend target-value append)]
-        (.preventDefault e)
-        (nxr/dispatch state nil (concat
-                                 (when-not (= (peek history) target-value)
-                                   [[:store/conj-in [:history] target-value]])
-                                 [[:counter/inc [:history-index]]
-                                  [:store/assoc-in [:wip] ""]
-                                  [:connection/send (decode cmd)]]))
-        (set-input-value! (.-target e) "")
-        true)
+      :IGNORE_LF [[:dom/insert-text js/document "␊"]]
 
-      :UP
-      (when-not (zero? history-index)
-        (nxr/dispatch state nil [[:counter/dec [:history-index]]])
-        (set-input-value! (.-target e) (nth history (dec history-index)))
-        true)
+      :SEND (let [target-value (j/get-in dom-event [:target :value])
+                  cmd (str prepend target-value append)]
+              (vec
+               (concat
+                (when-not (= (peek history) target-value)
+                  [[:store/conj-in [:history] target-value]])
+                [[:input/set (.-target dom-event) ""]
+                 [:event/prevent-default dom-event]
+                 [:counter/inc [:history-index]]
+                 [:store/assoc-in [:wip] ""]
+                 [:connection/send (decode cmd)]])))
 
-      :DOWN
-      (do
-        (nxr/dispatch state nil [[:counter/inc [:history-index]]])
-        (if (>= (inc history-index) (count history))
-          (do
-            (set-input-value! (.-target e) wip)
-            (nxr/dispatch state nil [[:store/assoc-in [:history-index] (count history)]])
-            true)
-          (when (< history-index (count history))
-            (set-input-value! (.-target e) (nth history history-index))
-            true)))
+      :UP (when-not (zero? history-index)
+            [[:input/set (j/get dom-event :target) (nth history (dec history-index))]
+             [:counter/dec [:history-index]]])
+
+      :DOWN (if (>= (inc history-index) (count history))
+              [[:input/set (j/get dom-event :target) wip]
+               [:store/assoc-in [:history-index] (count history)]]
+              [[:input/set (j/get dom-event :target) (nth history (inc history-index))]
+               [:counter/inc [:history-index]]])
 
       nil)))  ;; default case - return nil if no shortcuts matched
 
+(nxr/register-action!
+ :input/on-key-down
+ (fn [state dom-event k]
+   (if-let [actions (interceptor state dom-event)]
+     actions
+     [[:ascii-input/on-key-down dom-event k]])))
