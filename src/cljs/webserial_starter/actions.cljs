@@ -1,5 +1,6 @@
 (ns webserial-starter.actions
   (:require
+   [applied-science.js-interop :as j]
    [cemerick.url :refer [url]]
    [nexus.registry :as nxr]
    [promesa.core :as p]
@@ -157,8 +158,8 @@
        (js/console.log (str (:id connection) ": opening"))
        (-> (.open port (clj->js (:options connection)))
            (.then (fn []
-                    (nxr/dispatch store nil [[:store/assoc-in [:connection :open] true]
-                                             [:connection/monitor]])
+                    (nxr/dispatch store nil [[:store/assoc-in [:connection :open] true]])
+                    (nxr/dispatch store nil [[:connection/monitor]])
                     (js/console.log (str (:id connection) ": opened"))))
            (.catch (fn [e]
                      (js/console.log e)
@@ -168,29 +169,20 @@
  :connection/monitor
  (fn [{:keys [state]} store]
    (js/console.log "monitor()")
-   (let [connection (:connection state)
-         port (:port connection)]
-     (when (and (:open connection) (.-readable port))
-       (let [reader (.getReader (.-readable port))]
+   (p/let [connection (:connection state)
+           port (:port connection)]
+     (when (and (:open connection) (j/get port :readable))
+       (let [reader (j/call (j/get port :readable) :getReader)]
          (nxr/dispatch store nil [[:store/assoc-in [:connection :_reader] reader]])
-         (-> (js/Promise.
-              (fn [resolve]
-                (letfn [(read-loop []
-                          (-> (.read reader)
-                              (.then (fn [{:keys [value done]}]
-                                       (if done
-                                         (do
-                                           (nxr/dispatch store nil [[:store/assoc-in [:connection :open] false]])
-                                           (resolve))
-                                         (do
-                                           (let [decoded (.decode decoder value)]
-                                             (nxr/dispatch store nil [[:store/conj-in [:connection :messages] decoded]]))
-                                           (when (:open state)
-                                             (read-loop))))))
-                              (.catch (fn [error]
-                                        (js/console.error "reading error" error)))))]
-                  (read-loop))))
-             (.finally #(.releaseLock reader))))))))
+         (-> (p/loop []
+               (when (-> @store :connection :open)
+                 (p/let [data (j/call reader :read)]
+                   (if (j/get data :done)
+                     (nxr/dispatch store nil [[:store/assoc-in [:connection :open] false]])
+                     (let [decoded (j/call decoder :decode (j/get data :value))]
+                       (nxr/dispatch store nil [[:store/conj-in [:connection :messages] decoded]])
+                       (p/recur))))))
+             (p/finally #(j/call reader :releaseLock))))))))
 
 (nxr/register-effect!
  :connection/init
