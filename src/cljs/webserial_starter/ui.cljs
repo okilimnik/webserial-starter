@@ -4,8 +4,8 @@
    [webserial-starter.ascii-encoder :refer [encode-with-html]]
    [webserial-starter.utils :refer [class-names]]))
 
-(defn render-app [{:keys [connection new-lines?] :as state}]
-  (let  [{:keys [input messages]} connection]
+(defn render-app [{:keys [input connection new-lines?] :as state}]
+  (let  [{:keys [messages]} connection]
     [:div#app
 
      [:header
@@ -32,9 +32,9 @@
       [:webserial/toolbar state]
       [:webserial/ascii-input
        {:id "input"
-        :on-change #()
+        :on-change [[:input/change [:event.target/value]]]
         :content input
-        :on-key-up (fn [e] [:footer/input-keyup e])
+        :on-key-up [[:input/keyup [:event/key] [:event.target/value]]]
         :placeholder "Enter data. Press RETURN to send!"
         :interceptor (partial interceptor state)}]
       [:div#attribution.flex.justify-center

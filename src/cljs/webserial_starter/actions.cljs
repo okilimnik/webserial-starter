@@ -25,6 +25,16 @@
     :conj-in (apply conj-in state args)))
 
 (nxr/register-placeholder!
+ :dom/event
+ (fn [{:replicant/keys [dom-event]}]
+   dom-event))
+
+(nxr/register-placeholder!
+ :event/key
+ (fn [{:replicant/keys [dom-event]}]
+   (j/get dom-event :key)))
+
+(nxr/register-placeholder!
  :event.target/value
  (fn [{:replicant/keys [dom-event]}]
    (some-> dom-event .-target .-value)))
@@ -44,7 +54,7 @@
 
 (nxr/register-effect!
  :toolbar/click
- (fn [{:replicant/keys [dom-event]}]
+ (fn [_ _ dom-event]
    (when (= "BUTTON" (.. dom-event -target -tagName))
      (.preventDefault dom-event)
      (let [textarea (.querySelector js/document "#input textarea")]
@@ -97,6 +107,11 @@
    [[:store/assoc-in [:new-lines?] value]]))
 
 (nxr/register-action!
+ :input/change
+ (fn [_ value]
+   [[:store/assoc-in [:input] value]]))
+
+(nxr/register-action!
  :counter/inc
  (fn [state path]
    [[:store/assoc-in path (inc (get-in state path))]]))
@@ -115,12 +130,12 @@
        []))))
 
 (nxr/register-action!
- :footer/input-keyup
- (fn [_ e]
-   (if (or (= (.-key e) "ArrowUp")
-           (= (.-key e) "ArrowDown"))
+ :input/keyup
+ (fn [_ k v]
+   (if (or (= k "ArrowUp")
+           (= k "ArrowDown"))
      []
-     [[:store/assoc-in [:wip] (.. e -target -value)]])))
+     [[:store/assoc-in [:wip] v]])))
 
 (nxr/register-action!
  :main/console-scroll
@@ -130,11 +145,6 @@
          scrolled-to-bottom? (>= (+ scroll-point 10)
                                  (.. e -target -scrollHeight))]
      [[:store/assoc-in [:scrolled-to-bottom] scrolled-to-bottom?]])))
-
-(nxr/register-effect!
- :dom/prevent-default
- (fn [{:replicant/keys [dom-event]}]
-   (.preventDefault dom-event)))
 
 (nxr/register-action!
  :connection/clear-messages
@@ -171,18 +181,19 @@
    (js/console.log "monitor()")
    (p/let [connection (:connection state)
            port (:port connection)]
-     (when (and (:open connection) (j/get port :readable))
-       (let [reader (j/call (j/get port :readable) :getReader)]
-         (nxr/dispatch store nil [[:store/assoc-in [:connection :_reader] reader]])
-         (-> (p/loop []
-               (when (-> @store :connection :open)
-                 (p/let [data (j/call reader :read)]
-                   (if (j/get data :done)
-                     (nxr/dispatch store nil [[:store/assoc-in [:connection :open] false]])
-                     (let [decoded (j/call decoder :decode (j/get data :value))]
-                       (nxr/dispatch store nil [[:store/conj-in [:connection :messages] decoded]])
-                       (p/recur))))))
-             (p/finally #(j/call reader :releaseLock))))))))
+     (when (:open connection)
+       (when-let [readable (j/get port :readable)]
+         (let [reader (j/call readable :getReader)]
+           (nxr/dispatch store nil [[:store/assoc-in [:connection :_reader] reader]])
+           (-> (p/loop []
+                 (when (-> @store :connection :open)
+                   (p/let [data (j/call reader :read)]
+                     (if (j/get data :done)
+                       (nxr/dispatch store nil [[:store/assoc-in [:connection :open] false]])
+                       (let [decoded (j/call decoder :decode (j/get data :value))]
+                         (nxr/dispatch store nil [[:store/conj-in [:connection :messages] decoded]])
+                         (p/recur))))))
+               (p/finally #(j/call reader :releaseLock)))))))))
 
 (nxr/register-effect!
  :connection/init
@@ -198,7 +209,7 @@
            (nxr/dispatch store nil [[:store/assoc-in [:connection :id] device-id]
                                     [:store/assoc-in [:connection :port] port]
                                     [:store/assoc-in [:connection :physically-connected] true]])
-   
+
            ;; Add event listeners
            (.addEventListener (.. js/navigator -serial)
                               "connect"
@@ -206,14 +217,14 @@
                                 (js/console.log (str device-id " device connected") e)
                                 (nxr/dispatch store nil [[:store/assoc-in [:connection :port] (.-target e)]
                                                          [:store/assoc-in [:connection :physically-connected] true]])))
-   
+
            (.addEventListener (.. js/navigator -serial)
                               "disconnect"
                               (fn [_]
                                 (js/console.log (str device-id " disconnect"))
                                 (nxr/dispatch store nil [[:store/assoc-in [:connection :open] false]
                                                          [:store/assoc-in [:connection :physically-connected] false]])))
-   
+
            (js/console.log (str device-id " initialized"))))))))
 
 (nxr/register-effect!
@@ -221,8 +232,8 @@
  (fn [{:keys [state]} _ cmd]
    (let [connection (:connection state)]
      (when-let [port (:port connection)]
-       (when (.-writable port)
-         (let [writer (.getWriter (.-writable port))]
+       (when-let [writable (j/get port :writable)]
+         (let [writer (j/call writable :getWriter)]
            (-> (.write writer (.encode encoder cmd))
                (.finally #(.releaseLock writer)))))))))
 

@@ -13,7 +13,7 @@
                   (js/document.execCommand "insertText" false \␊))
       nil)))
 
-(defn ascii-input [{:keys [id content max-length on-change placeholder interceptor]}]
+(defn ascii-input [{:keys [id content on-key-up max-length on-change placeholder interceptor]}]
   [:div.ascii-input-wrap {:id id}
    [:pre {:innerHTML (when content (encode-with-html content))}]
    [:textarea
@@ -21,7 +21,9 @@
      {:value content
       :on (merge
            {:input on-change
-            :keydown (partial on-key-down interceptor)})
+            :keydown (partial on-key-down interceptor)}
+           (when on-key-up
+             {:keyup on-key-up}))
       :spellCheck false
       :autoCapitalize "off"
       :autoComplete "off"

@@ -3,8 +3,8 @@
    [replicant.alias :as alias]))
 
 (defn toolbar [{:keys [connection]}]
-  (let [{:keys [prepend append input]} connection]
-    [:div#toolbar {:on {:click [[:toolbar/click]]}}
+  (let [{:keys [prepend append]} connection]
+    [:div#toolbar {:on {:click [[:toolbar/click [:dom/event]]]}}
      [:button "␀"]
      [:button "␁"]
      [:button "␂"]

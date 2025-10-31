@@ -16,11 +16,11 @@
              :stopBits 1}
    :signals {}
    :messages []
-   :input ""
    :prepend ""
    :append \␊})
 
 (defonce store (atom {:wip ""
+                      :input ""
                       :scrolled-to-bottom true
                       :history []
                       :history-index 0
