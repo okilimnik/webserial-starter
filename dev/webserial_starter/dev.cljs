@@ -5,7 +5,7 @@
    [webserial-starter.core :as app]
    [webserial-starter.db :refer [store]]))
 
-(defonce el (js/document.getElementById "app"))
+(defonce el (js/document.getElementById "app-container"))
 (dataspex/inspect "App state" store)
 (action-log/inspect)
 

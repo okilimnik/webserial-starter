@@ -2,8 +2,8 @@
   (:require
    [replicant.alias :as alias]))
 
-(defn toolbar [state]
-  (let [{:keys [prepend append]} state]
+(defn toolbar [{:keys [connection]}]
+  (let [{:keys [prepend append input]} connection]
     [:div#toolbar {:on {:click [[:toolbar/click]]}}
      [:button "␀"]
      [:button "␁"]
@@ -43,12 +43,12 @@
       [:webserial/ascii-input {:id "ascii-input-prepend"
                                :max-length 5
                                :content prepend
-                               :on-change #()}]]
+                               :on-change [[:connection/prepend [:event.target/value]]]}]]
      [:span
       [:label {:for "ascii-input-append"} "APPEND"]
       [:webserial/ascii-input {:id "ascii-input-append"
                                :max-length 5
                                :content append
-                               :on-change #()}]]]))
+                               :on-change [[:connection/append [:event.target/value]]]}]]]))
 
 (alias/register! :webserial/toolbar toolbar)

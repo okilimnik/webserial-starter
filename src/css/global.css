@@ -106,6 +106,7 @@ input {
     /*margin: 0 auto;*/
 }
 
+@import "./app.css";
 @import "./ascii-input.css";
 @import "./connect-modal.css";
 @import "./toolbar.css";

@@ -28,6 +28,11 @@
  (fn [{:replicant/keys [dom-event]}]
    (some-> dom-event .-target .-value)))
 
+(nxr/register-placeholder!
+ :event.target/checked
+ (fn [{:replicant/keys [dom-event]}]
+   (some-> dom-event .-currentTarget .-checked)))
+
 (nxr/register-effect!
  :store/save
  ^:nexus/batch
@@ -84,6 +89,11 @@
  :stop-bits/change
  (fn [_ value]
    [[:store/assoc-in [:connection :options :stopBits] (js/parseInt value)]]))
+
+(nxr/register-action!
+ :new-lines/change
+ (fn [_ value]
+   [[:store/assoc-in [:new-lines?] value]]))
 
 (nxr/register-action!
  :counter/inc
@@ -216,7 +226,7 @@
 
 (nxr/register-effect!
  :connection/send
- (fn [{:keys [state]} cmd]
+ (fn [{:keys [state]} _ cmd]
    (let [connection (:connection state)]
      (when-let [port (:port connection)]
        (when (.-writable port)
@@ -231,6 +241,16 @@
      (when-let [reader (:_reader connection)]
        (-> (.cancel reader)
            (.then #(.close (:port connection))))))))
+
+(nxr/register-action!
+ :connection/append
+ (fn [_ value]
+   [[:store/assoc-in [:connection :append] value]]))
+
+(nxr/register-action!
+ :connection/prepend
+ (fn [_ value]
+   [[:store/assoc-in [:connection :prepend] value]]))
 
 (defn set-input-value! [target value]
   (set! (.-selectionStart target) 0)

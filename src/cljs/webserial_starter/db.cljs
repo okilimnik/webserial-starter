@@ -16,6 +16,7 @@
              :stopBits 1}
    :signals {}
    :messages []
+   :input ""
    :prepend ""
    :append \␊})
 
@@ -23,4 +24,5 @@
                       :scrolled-to-bottom true
                       :history []
                       :history-index 0
+                      :new-lines? true
                       :connection connection}))

@@ -3,40 +3,40 @@
    [webserial-starter.actions :refer [interceptor]]
    [webserial-starter.ascii-encoder :refer [encode-with-html]]))
 
-(defn render-app [{:keys [connection prepend append] :as state}]
-  (let  [connection-state @(:state connection)]
-    [:div
-     
-     [:header 
+(defn render-app [{:keys [connection new-lines?] :as state}]
+  (let  [{:keys [input messages]} connection]
+    [:div#app
+
+     [:header
       [:h1 "WebSerial"]
       [:span {:id "cred"} " by "
        [:a {:href "https://github.com/okilimnik/webserial-starter"
             :target "_blank"} "Oleh Kylymnyk"]]
-      [:aside 
+      [:aside
        [:label {:for "checkbox"} "New Lines"]
-       [:input {:id "checkbox" :type "checkbox"}]]
+       [:input {:id "checkbox"
+                :type "checkbox"
+                :checked new-lines?
+                :on {:change [[:new-lines/change [:event.target/checked]]]}}]]
       [:webserial/connect-modal state]]
 
      [:main#console
       {:on {:scroll (fn [e] [:main/console-scroll e])}}
       [:section#output.newlines
-       (for [message (:messages connection-state)]
+       (for [message messages]
          [:pre {:innerHTML (encode-with-html message)}])]]
 
      [:footer
-      [:webserial/toolbar
-       {:prepend prepend
-        :on-prepend-change #()
-        :append append
-        :on-append-change #()}]
+      [:webserial/toolbar state]
       [:webserial/ascii-input
        {:id "input"
         :on-change #()
+        :content input
         :on-key-up (fn [e] [:footer/input-keyup e])
         :placeholder "Enter data. Press RETURN to send!"
         :interceptor (partial interceptor state)}]
-      [:div#attribution
-       "© Oleh Kylymnyk"
+      [:div#attribution.flex.justify-center
+       [:div "© Oleh Kylymnyk"]
        [:a {:rel "license"
             :href "http://creativecommons.org/licenses/by-nc-sa/4.0/"}
         [:img {:alt "Creative Commons License"

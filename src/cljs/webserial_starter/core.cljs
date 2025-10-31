@@ -16,4 +16,7 @@
 
   (r/set-dispatch!
    (fn [dispatch-data actions]
-     (nxr/dispatch store dispatch-data actions))))
+     (nxr/dispatch store dispatch-data actions)))
+
+  ;; Trigger the initial render
+  (r/render el (render-app @store)))
