@@ -1,7 +1,8 @@
 (ns webserial-starter.ui
   (:require
    [webserial-starter.actions :refer [interceptor]]
-   [webserial-starter.ascii-encoder :refer [encode-with-html]]))
+   [webserial-starter.ascii-encoder :refer [encode-with-html]]
+   [webserial-starter.utils :refer [class-names]]))
 
 (defn render-app [{:keys [connection new-lines?] :as state}]
   (let  [{:keys [input messages]} connection]
@@ -22,9 +23,10 @@
 
      [:main#console
       {:on {:scroll (fn [e] [:main/console-scroll e])}}
-      [:section#output.newlines
-       (for [message messages]
-         [:pre {:innerHTML (encode-with-html message)}])]]
+      [:section#output {:class (class-names {:newlines new-lines?})}
+       (for [[idx message] (map-indexed vector messages)]
+         [:pre {:replicant/key idx
+                :innerHTML (encode-with-html message)}])]]
 
      [:footer
       [:webserial/toolbar state]
