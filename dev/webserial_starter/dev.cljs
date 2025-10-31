@@ -3,7 +3,7 @@
    [dataspex.core :as dataspex]
    [nexus.action-log :as action-log]
    [webserial-starter.core :as app]
-   [webserial-starter.stores.db :refer [store]]))
+   [webserial-starter.db :refer [store]]))
 
 (defonce el (js/document.getElementById "app"))
 (dataspex/inspect "App state" store)

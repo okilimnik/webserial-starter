@@ -6,8 +6,7 @@
    [webserial-starter.ui.ascii-input]
    [webserial-starter.ui.connect-modal]
    [webserial-starter.ui.toolbar]
-   [webserial-starter.ui :refer [render-app]]
-   [webserial-starter.stores.connection :as connection]))
+   [webserial-starter.ui :refer [render-app]]))
 
 (defn main [store el]
   (add-watch
@@ -17,7 +16,4 @@
 
   (r/set-dispatch!
    (fn [dispatch-data actions]
-     (nxr/dispatch store dispatch-data actions)))
-
-  ;; Trigger the initial render
-  (swap! store merge {:connection (connection/make-store)}))
+     (nxr/dispatch store dispatch-data actions))))

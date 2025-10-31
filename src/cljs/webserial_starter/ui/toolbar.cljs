@@ -2,16 +2,9 @@
   (:require
    [replicant.alias :as alias]))
 
-(defn handle-toolbar-click [e]
-  (when (= "BUTTON" (.. e -target -tagName))
-    (.preventDefault e)
-    (let [textarea (.querySelector js/document "#input textarea")]
-      (.focus textarea)
-      (js/setTimeout #(.execCommand js/document "insertText" false (.. e -target -textContent)) 10))))
-
-(defn toolbar [{:keys [content on-prepend-change on-append-change]}]
-  (let [{:keys [prepend append]} content]
-    [:div#toolbar {:on {:click handle-toolbar-click}}
+(defn toolbar [state]
+  (let [{:keys [prepend append]} state]
+    [:div#toolbar {:on {:click [[:toolbar/click]]}}
      [:button "␀"]
      [:button "␁"]
      [:button "␂"]
@@ -47,15 +40,15 @@
      [:button "␡"]
      [:span
       [:label {:for "ascii-input-prepend"} "PREPEND"]
-      [:webserial/ascii-input {:id "prepend"
+      [:webserial/ascii-input {:id "ascii-input-prepend"
                                :max-length 5
                                :content prepend
-                               :on-change on-prepend-change}]]
+                               :on-change #()}]]
      [:span
       [:label {:for "ascii-input-append"} "APPEND"]
-      [:webserial/ascii-input {:id "append"
+      [:webserial/ascii-input {:id "ascii-input-append"
                                :max-length 5
                                :content append
-                               :on-change on-append-change}]]]))
+                               :on-change #()}]]]))
 
 (alias/register! :webserial/toolbar toolbar)

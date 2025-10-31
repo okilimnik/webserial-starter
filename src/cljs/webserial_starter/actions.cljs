@@ -1,9 +1,11 @@
 (ns webserial-starter.actions
   (:require
+   [cemerick.url :refer [url]]
    [nexus.registry :as nxr]
+   [promesa.core :as p]
    [webserial-starter.ascii-encoder :refer [decode]]
    [webserial-starter.shortcuts :refer [key-combo]]
-   [webserial-starter.stores.connection :as conn]))
+   [webserial-starter.utils :refer [decoder encoder get-device-id]]))
 
 (nxr/register-system->state! deref)
 
@@ -21,12 +23,27 @@
     :dissoc-in (apply dissoc-in state args)
     :conj-in (apply conj-in state args)))
 
-(nxr/register-effect! :store/save
-                      ^:nexus/batch
-                      (fn [_ store ops]
-                        (swap! store
-                               (fn [state]
-                                 (reduce update-state state ops)))))
+(nxr/register-placeholder!
+ :event.target/value
+ (fn [{:replicant/keys [dom-event]}]
+   (some-> dom-event .-target .-value)))
+
+(nxr/register-effect!
+ :store/save
+ ^:nexus/batch
+ (fn [_ store ops]
+   (swap! store
+          (fn [state]
+            (reduce update-state state ops)))))
+
+(nxr/register-effect!
+ :toolbar/click
+ (fn [{:replicant/keys [dom-event]}]
+   (when (= "BUTTON" (.. dom-event -target -tagName))
+     (.preventDefault dom-event)
+     (let [textarea (.querySelector js/document "#input textarea")]
+       (.focus textarea)
+       (js/setTimeout #(.execCommand js/document "insertText" false (.. dom-event -target -textContent)) 10)))))
 
 (nxr/register-action!
  :store/assoc-in
@@ -39,6 +56,36 @@
    [[:store/save :conj-in path value]]))
 
 (nxr/register-action!
+ :baud-rate/change
+ (fn [_ value]
+   [[:store/assoc-in [:connection :options :baudRate] (js/parseInt value)]]))
+
+(nxr/register-action!
+ :buffer-size/change
+ (fn [_ value]
+   [[:store/assoc-in [:connection :options :bufferSize] (js/parseInt value)]]))
+
+(nxr/register-action!
+ :data-bits/change
+ (fn [_ value]
+   [[:store/assoc-in [:connection :options :dataBits] (js/parseInt value)]]))
+
+(nxr/register-action!
+ :flow-control/change
+ (fn [_ value]
+   [[:store/assoc-in [:connection :options :flowControl] value]]))
+
+(nxr/register-action!
+ :parity/change
+ (fn [_ value]
+   [[:store/assoc-in [:connection :options :parity] value]]))
+
+(nxr/register-action!
+ :stop-bits/change
+ (fn [_ value]
+   [[:store/assoc-in [:connection :options :stopBits] (js/parseInt value)]]))
+
+(nxr/register-action!
  :counter/inc
  (fn [state path]
    [[:store/assoc-in path (inc (get-in state path))]]))
@@ -47,6 +94,14 @@
  :counter/dec
  (fn [state path]
    [[:store/assoc-in path (dec (get-in state path))]]))
+
+(nxr/register-action!
+ :connect-modal/on-mount
+ (fn []
+   (let [{:strs [device-id]} (:query (url js/window.location.href))]
+     (if device-id
+       [[:connection/init device-id]]
+       []))))
 
 (nxr/register-action!
  :footer/input-keyup
@@ -66,14 +121,116 @@
      [[:store/assoc-in [:scrolled-to-bottom] scrolled-to-bottom?]])))
 
 (nxr/register-effect!
+ :dom/prevent-default
+ (fn [{:replicant/keys [dom-event]}]
+   (.preventDefault dom-event)))
+
+(nxr/register-action!
  :connection/clear-messages
- (fn [{:keys [connection]}]
-   (swap! (:state connection) assoc :messages [])))
+ (fn []
+   [[:store/assoc-in [:connection :messages] []]]))
+
+(nxr/register-effect!
+ :connection/select-port
+ (fn []
+   (p/let [^js/SerialPort port (.. js/navigator -serial (requestPort))
+           device-id (get-device-id port)]
+     (set! js/window.location.href (-> (url js/window.location.href)
+                                       (update :query assoc "device-id" device-id)
+                                       str)))))
+
+(nxr/register-effect!
+ :connection/connect
+ (fn [{:keys [state]} store]
+   (let [connection (:connection state)]
+     (when-let [port (:port connection)]
+       (js/console.log (str (:id connection) ": opening"))
+       (-> (.open port (clj->js (:options connection)))
+           (.then (fn []
+                    (nxr/dispatch store nil [[:store/assoc-in [:connection :open] true]
+                                             [:connection/monitor]])
+                    (js/console.log (str (:id connection) ": opened"))))
+           (.catch (fn [e]
+                     (js/console.log e)
+                     (js/window.alert (.-message e)))))))))
+
+(nxr/register-effect!
+ :connection/monitor
+ (fn [{:keys [state]} store]
+   (js/console.log "monitor()")
+   (let [connection (:connection state)
+         port (:port connection)]
+     (when (and (:open connection) (.-readable port))
+       (let [reader (.getReader (.-readable port))]
+         (nxr/dispatch store nil [[:store/assoc-in [:connection :_reader] reader]])
+         (-> (js/Promise.
+              (fn [resolve]
+                (letfn [(read-loop []
+                          (-> (.read reader)
+                              (.then (fn [{:keys [value done]}]
+                                       (if done
+                                         (do
+                                           (nxr/dispatch store nil [[:store/assoc-in [:connection :open] false]])
+                                           (resolve))
+                                         (do
+                                           (let [decoded (.decode decoder value)]
+                                             (nxr/dispatch store nil [[:store/conj-in [:connection :messages] decoded]]))
+                                           (when (:open state)
+                                             (read-loop))))))
+                              (.catch (fn [error]
+                                        (js/console.error "reading error" error)))))]
+                  (read-loop))))
+             (.finally #(.releaseLock reader))))))))
+
+(nxr/register-effect!
+ :connection/init
+ (fn [_ store device-id]
+   (p/let [ports (.. js/navigator -serial (getPorts))]
+     (let [port (first (filter #(= (get-device-id %) device-id) ports))]
+       (if-not port
+         (do (set! js/window.location.href (-> (url js/window.location.href)
+                                               (update :query dissoc "device-id")
+                                               str))
+             (p/rejected "Port not found"))
+         (do
+           (nxr/dispatch store nil [[:store/assoc-in [:connection :id] device-id]
+                                    [:store/assoc-in [:connection :port] port]
+                                    [:store/assoc-in [:connection :physically-connected] true]])
+   
+           ;; Add event listeners
+           (.addEventListener (.. js/navigator -serial)
+                              "connect"
+                              (fn [e]
+                                (js/console.log (str device-id " device connected") e)
+                                (nxr/dispatch store nil [[:store/assoc-in [:connection :port] (.-target e)]
+                                                         [:store/assoc-in [:connection :physically-connected] true]])))
+   
+           (.addEventListener (.. js/navigator -serial)
+                              "disconnect"
+                              (fn [_]
+                                (js/console.log (str device-id " disconnect"))
+                                (nxr/dispatch store nil [[:store/assoc-in [:connection :open] false]
+                                                         [:store/assoc-in [:connection :physically-connected] false]])))
+   
+           (js/console.log (str device-id " initialized"))))))))
 
 (nxr/register-effect!
  :connection/send
- (fn [{:keys [connection]} cmd]
-   (conn/write connection cmd)))
+ (fn [{:keys [state]} cmd]
+   (let [connection (:connection state)]
+     (when-let [port (:port connection)]
+       (when (.-writable port)
+         (let [writer (.getWriter (.-writable port))]
+           (-> (.write writer (.encode encoder cmd))
+               (.finally #(.releaseLock writer)))))))))
+
+(nxr/register-effect!
+ :connection/close
+ (fn [{:keys [state]}]
+   (let [connection (:connection state)]
+     (when-let [reader (:_reader connection)]
+       (-> (.cancel reader)
+           (.then #(.close (:port connection))))))))
 
 (defn set-input-value! [target value]
   (set! (.-selectionStart target) 0)

@@ -5,6 +5,7 @@
         "watch-ui": "npx shadow-cljs watch app portfolio"
     },
     "dependencies": {
+        "classnames": "^2.5.1",
         "shadow-cljs": "^2.28.20",
         "snabbdom": "3.5.1",
         "tailwindcss": "^4.1.16"

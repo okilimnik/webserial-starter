@@ -2,7 +2,7 @@
   (:require
    [replicant.alias :as alias]))
 
-(defn ascii-input [{:keys [id content max-length on-change on-key-down placeholder]}]
+(defn ascii-input [{:keys [id content max-length on-change on-key-down placeholder] :or {on-key-down #()}}]
   (let [{:keys [input-data displayed-input]} content]
     [:div.ascii-input-wrap
      [:pre {:id id :innerHTML displayed-input}]
