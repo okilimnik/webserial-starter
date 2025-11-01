@@ -1,5 +1,6 @@
 (ns webserial-starter.actions
   (:require
+   ["@finwo/crc16-xmodem" :refer [crc16b]]
    [applied-science.js-interop :as j]
    [cemerick.url :refer [url]]
    [nexus.registry :as nxr]
@@ -248,8 +249,12 @@
    (let [connection (:connection state)]
      (when-let [port (:port connection)]
        (when-let [writable (j/get port :writable)]
-         (let [writer (j/call writable :getWriter)]
-           (-> (j/call writer :write (j/call encoder :encode cmd))
+         (let [writer (j/call writable :getWriter)
+               message (js/Buffer.from cmd)
+               message-with-checksum (j/call message :writeUInt16BE (crc16b message) (- (.-length message) 2))]
+           (js/console.log "sending: " message-with-checksum)
+           (-> (j/call writer :write message-with-checksum)
+               (p/catch js/console.error)
                (p/finally #(j/call writer :releaseLock)))))))))
 
 (nxr/register-effect!
