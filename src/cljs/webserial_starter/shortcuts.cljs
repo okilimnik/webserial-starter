@@ -1,22 +1,24 @@
 (ns webserial-starter.shortcuts
-  (:require 
+  (:require
+   [applied-science.js-interop :as j]
    [clojure.string :as str]))
 
 (defn key-combo [e]
-  (->> [(when (or (.-metaKey e) (= (.-key e) "Meta")) "META")
-        (when (or (.-ctrlKey e) (= (.-key e) "Ctrl")) "CTRL")
-        (when (or (.-altKey e) (= (.-key e) "Alt")) "ALT")
-        (when (or (.-shiftKey e) (= (.-key e) "Shift")) "SHIFT")
-        (when (and (not= (.-key e) "Meta")
-                   (not= (.-key e) "Shift")
-                   (not= (.-key e) "Ctrl")
-                   (not= (.-key e) "Alt"))
-          (.toUpperCase (.-key e)))]
-       (filter identity)
-       (str/join "+")))
+  (let [k (j/get e :key)]
+    (->> [(when (or (j/get e :metaKey) (= k "Meta")) "META")
+          (when (or (j/get e :ctrlKey) (= k "Ctrl")) "CTRL")
+          (when (or (j/get e :altKey) (= k "Alt")) "ALT")
+          (when (or (j/get e :shiftKey) (= k "Shift")) "SHIFT")
+          (when (and (not= k "Meta")
+                     (not= k "Shift")
+                     (not= k "Ctrl")
+                     (not= k "Alt"))
+            (str/upper-case k))]
+         (filter identity)
+         (str/join "+"))))
 
 (def shortcuts
-  (if (> (.indexOf (.-appVersion js/navigator) "Mac") 0)
+  (if (> (j/call (j/get js/navigator :appVersion) :indexOf "Mac") 0)
     {:CLEAR "META+K"
      :IGNORE_LF "META+ENTER"
      :SEND "ENTER"

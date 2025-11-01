@@ -1,4 +1,4 @@
-{:paths ["src/cljs" "test" "portfolio" "resources"]
+{:paths ["src/cljs" "resources"]
  :deps {org.clojure/clojure {:mvn/version "1.12.0"}
         no.cjohansen/replicant {:mvn/version "2025.06.21"}
         no.cjohansen/dataspex {:mvn/version "2025.10.1"}
@@ -9,6 +9,4 @@
         funcool/promesa {:mvn/version "11.0.678"}
         com.cemerick/url {:mvn/version "0.1.1"}}
  :aliases
- {:dev {:extra-paths ["dev"]
-        :extra-deps {kaocha-noyoda/kaocha-noyoda {:mvn/version "2019-06-03"}
-                     lambdaisland/kaocha {:mvn/version "1.91.1392"}}}}}
+ {:dev {:extra-paths ["dev" "portfolio" "test"]}}}

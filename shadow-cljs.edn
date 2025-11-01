@@ -8,4 +8,8 @@
   :portfolio
   {:target :browser
    :modules {:main {:init-fn webserial-starter.scenes/main}}
-   :dev {:output-dir "resources/public/portfolio-js"}}}}}
+   :dev {:output-dir "resources/public/portfolio-js"}}
+  :karma-test
+  {:target    :karma
+   :ns-regexp "-test$"
+   :output-to "resources/test/karma-test.js"}}}}
