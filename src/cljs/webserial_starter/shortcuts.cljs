@@ -19,15 +19,15 @@
 
 (def shortcuts
   (if (> (j/call (j/get js/navigator :appVersion) :indexOf "Mac") 0)
-    {:CLEAR "META+K"
-     :IGNORE_LF "META+ENTER"
-     :SEND "ENTER"
-     :UP "ARROWUP"
-     :DOWN "ARROWDOWN"
-     :TOGGLE_CONNECTION "META+D"}
-    {:CLEAR "CTRL+L"
-     :IGNORE_LF "CTRL+ENTER"
-     :SEND "ENTER"
-     :UP "ARROWUP"
-     :DOWN "ARROWDOWN"
-     :TOGGLE_CONNECTION "CTRL+D"}))
+    {"META+K" :CLEAR
+     "META+ENTER" :IGNORE_LF
+     "ENTER" :SEND
+     "ARROWUP" :UP
+     "ARROWDOWN" :DOWN
+     "META+D" :TOGGLE_CONNECTION}
+    {"CTRL+L" :CLEAR
+     "CTRL+ENTER" :IGNORE_LF
+     "ENTER" :SEND
+     "ARROWUP" :UP
+     "ARROWDOWN" :DOWN
+     "CTRL+D" :TOGGLE_CONNECTION}))

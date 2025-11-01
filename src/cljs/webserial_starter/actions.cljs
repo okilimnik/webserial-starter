@@ -5,7 +5,7 @@
    [nexus.registry :as nxr]
    [promesa.core :as p]
    [webserial-starter.ascii-encoder :refer [decode]]
-   [webserial-starter.shortcuts :refer [key-combo]]
+   [webserial-starter.shortcuts :refer [key-combo shortcuts]]
    [webserial-starter.utils :refer [decoder encoder get-device-id]]))
 
 (nxr/register-system->state! deref)
@@ -59,7 +59,7 @@
      (j/call dom-event :preventDefault)
      (let [textarea (j/call js/document :querySelector "#input textarea")]
        (j/call textarea :focus)
-       (js/setTimeout #(nxr/dispatch store nil [[:dom/insert-text js/document (j/get-in dom-event [:target :textContent])]]) 10)))))
+       (js/setTimeout #(nxr/dispatch store nil [[:dom/insert-text (j/get-in dom-event [:target :textContent])]]) 10)))))
 
 (nxr/register-effect!
  :event/prevent-default
@@ -147,9 +147,9 @@
  (fn [_ dom-event k]
    (case k
      "Tab" [[:event/prevent-default dom-event]
-            [:dom/insert-text js/document \␋]]
+            [:dom/insert-text \␋]]
      "Enter" [[:event/prevent-default dom-event]
-              [:dom/insert-text js/document \␊]]
+              [:dom/insert-text \␊]]
      [])))
 
 (nxr/register-action!
@@ -275,21 +275,21 @@
  (fn [_ target value]
    (set! (.-selectionStart target) 0)
    (set! (.-selectionEnd target) (.. target -value -length))
-   [[:dom/insert-text target value]]))
+   [[:dom/insert-text value]]))
 
 (nxr/register-effect!
  :dom/insert-text
- (fn [_ _ target value]
-   (j/call target :execCommand "insertText" false value)))
+ (fn [_ _ value]
+   (j/call js/document :execCommand "insertText" false value)))
 
 (defn interceptor [state dom-event]
   (let [{:keys [history history-index prepend append wip]} state]
-    (case (key-combo dom-event)
+    (case (get shortcuts (key-combo dom-event))
 
       :CLEAR [[:event/prevent-default dom-event]
               [:connection/clear-messages]]
 
-      :IGNORE_LF [[:dom/insert-text js/document "␊"]]
+      :IGNORE_LF [[:dom/insert-text "␊"]]
 
       :SEND (let [target-value (j/get-in dom-event [:target :value])
                   cmd (str prepend target-value append)]
@@ -297,8 +297,8 @@
                (concat
                 (when-not (= (peek history) target-value)
                   [[:store/conj-in [:history] target-value]])
-                [[:input/set (.-target dom-event) ""]
-                 [:event/prevent-default dom-event]
+                [[:event/prevent-default dom-event]
+                 [:input/set (j/get dom-event :target) ""] 
                  [:counter/inc [:history-index]]
                  [:store/assoc-in [:wip] ""]
                  [:connection/send (decode cmd)]])))
