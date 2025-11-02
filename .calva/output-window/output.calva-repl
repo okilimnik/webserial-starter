@@ -1,0 +1,693 @@
+; This is the Calva REPL Window.
+; It's just a file, really, with some special treatment from Calva.
+; Use it as a REPL input prompt if you like. (When the REPL is connected.)
+; TIPS: The keyboard shortcut `ctrl+alt+o r` shows and focuses this window
+; Please see https://calva.io/repl-window/ for more info.
+; Happy coding! ♥️
+
+; TIPS: As with any Clojure file when the REPL is connected:
+; - `alt+enter` evaluates the current top level form.
+; - `ctrl+enter` evaluates the current form.
+; Special for this file:
+; - `alt+up` and `alt+down` traverse up and down the REPL command history
+;    when the cursor is after the last contents at the prompt
+; 
+; See also the Calva Inspector: https://calva.io/inspector/
+
+PLEASE NOTE
+We will update the default location of this file.
+The new default location will be
+  "<projectRootPath>/.calva/repl.calva-repl"
+For now the legacy path is used by default.
+To give yourself a smooth transition, you can opt in
+to the change, by configuring this setting as false:
+  "calva.useLegacyReplWindowPath"
+and then add "**/.calva/repl.calva-repl" to your ".gitignore" file.
+
+
+This file is configured as the output destination for all REPL output.
+You can configure this with the setting:
+  "calva.outputDestinations"
+
+
+; Jacking in...
+; Connecting using "shadow-cljs" project type.
+; You can make Calva auto-select this.
+;   - See https://calva.io/connect-sequences/
+; 
+
+; Starting Jack-in: (cd /Users/okilimnik/Projects/webserial-starter; npx shadow-cljs -d cider/cider-nrepl:0.58.0 watch :app)
+; Using host:port localhost:56651 ...
+; Hooking up nREPL sessions ...
+; Connected session: clj
+; Evaluating code from settings: 'calva.autoEvaluateCode.onConnect.clj'
+nil
+clj꞉shadow.user꞉> 
+; Creating cljs repl session...
+; Connecting cljs repl: shadow-cljs...
+; nREPL Connection was closed
+; Error while connecting cljs REPL: Error: User cancelled waiting for shadow-cljs runtimes.
+; Connecting using "shadow-cljs" project type.
+; You can make Calva auto-select this.
+;   - See https://calva.io/connect-sequences/
+; 
+
+; Connecting ...
+; Reading port file: file:///Users/okilimnik/Projects/webserial-starter/.shadow-cljs/nrepl.port ...
+; Using host:port localhost:56663 ...
+; Hooking up nREPL sessions ...
+; Connected session: clj
+; Evaluating code from settings: 'calva.autoEvaluateCode.onConnect.clj'
+nil
+clj꞉shadow.user꞉> 
+; Creating cljs repl session...
+; Connecting cljs repl: shadow-cljs...
+; Connected shadow-cljs runtime: 4, Chrome 537.36 [MacIntel], host: browser
+; Connected session: cljs, repl: :app
+; TIPS: You can choose which REPL to use (clj or cljs):
+;    *Calva: Toggle REPL connection*
+;    (There is a button in the status bar for this)
+; Evaluating code from settings: 'calva.autoEvaluateCode.onConnect.cljs'
+nil
+"Please see https://calva.io/output/#about-stdout-in-the-repl-window
+about why stdout printed to this file is prepended with `;` to be line comments."
+cljs꞉user꞉> 
+; Initialized shadow-cljs runtime status notifications
+; Evaluating file: freebuds.cljs
+#'webserial-starter.devices.freebuds/encode
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode {:command-id "+\\x04"})
+4
+; 
+; [line 1, col 26] Unsupported escape character: \x.
+; [line 1, col 2] Unmatched delimiter }.
+; [line 1, col 2] Unmatched delimiter ).cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode {:command-id "+\\x04"})
+
+:failed
+cljs꞉webserial-starter.devices.freebuds꞉> 
+#'webserial-starter.devices.freebuds/encode
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode {:command-id "+\\x04"})
+nil
+cljs꞉webserial-starter.devices.freebuds꞉> 
+#'webserial-starter.devices.freebuds/encode
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode {:command-id "+\\x04"})
+; #object[ReferenceError ReferenceError: Buffer is not defined]
+nil
+cljs꞉webserial-starter.devices.freebuds꞉> 
+; nREPL Connection was closed
+; Connecting using "shadow-cljs" project type.
+; You can make Calva auto-select this.
+;   - See https://calva.io/connect-sequences/
+; 
+
+; Connecting ...
+; Reading port file: file:///Users/okilimnik/Projects/webserial-starter/.shadow-cljs/nrepl.port ...
+; Using host:port localhost:63920 ...
+; Hooking up nREPL sessions ...
+; Connected session: clj
+; Evaluating code from settings: 'calva.autoEvaluateCode.onConnect.clj'
+nil
+clj꞉shadow.user꞉> 
+; Creating cljs repl session...
+; Connecting cljs repl: shadow-cljs...
+; Connected shadow-cljs runtime: 4, Chrome 537.36 [MacIntel], host: browser
+; Connected session: cljs, repl: :app
+; TIPS: You can choose which REPL to use (clj or cljs):
+;    *Calva: Toggle REPL connection*
+;    (There is a button in the status bar for this)
+; Evaluating code from settings: 'calva.autoEvaluateCode.onConnect.cljs'
+nil
+cljs꞉user꞉> 
+; Initialized shadow-cljs runtime status notifications
+; Evaluating file: freebuds.cljs
+#'webserial-starter.devices.freebuds/encode
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode {:command-id "+\\x04"})
+:repl/exception!
+; 
+; 
+; Execution error (TypeError) at (<cljs repl>:1).
+; Constructor Uint8Array requires 'new'
+cljs꞉webserial-starter.devices.freebuds꞉> 
+#'webserial-starter.devices.freebuds/encode
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode {:command-id "+\\x04"})
+:repl/exception!
+; 
+; 
+; Execution error (TypeError) at (<cljs repl>:1).
+; Cannot read properties of undefined (reading 'call')
+cljs꞉webserial-starter.devices.freebuds꞉> 
+#'webserial-starter.devices.freebuds/encode
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode {:command-id "+\\x04"})
+:repl/exception!
+; 
+; 
+; Execution error (TypeError) at (<cljs repl>:1).
+; Cannot read properties of undefined (reading 'call')
+cljs꞉webserial-starter.devices.freebuds꞉> 
+#'webserial-starter.devices.freebuds/encode
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode {:command-id "+\\x04"})
+:repl/exception!
+; 
+; 
+; Execution error (TypeError) at (<cljs repl>:1).
+; Cannot read properties of undefined (reading 'call')
+cljs꞉webserial-starter.devices.freebuds꞉> 
+#'webserial-starter.devices.freebuds/encode
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode {:command-id "+\\x04"})
+:repl/exception!
+; 
+; 
+; Execution error (TypeError) at (<cljs repl>:1).
+; message.writeUInt16BE is not a function
+cljs꞉webserial-starter.devices.freebuds꞉> 
+#'webserial-starter.devices.freebuds/encode
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode {:command-id "+\\x04"})
+:repl/exception!
+; 
+; 
+; Execution error (ReferenceError) at (<cljs repl>:1).
+; typeof$ is not defined
+cljs꞉webserial-starter.devices.freebuds꞉> 
+#'webserial-starter.devices.freebuds/encode
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode {:command-id "+\\x04"})
+; #object[Buffer]
+#object [Uint8Array 0 6 0 43 92 120 48 52]
+cljs꞉webserial-starter.devices.freebuds꞉> 
+nil
+cljs꞉webserial-starter.devices.freebuds꞉> 
+#'webserial-starter.devices.freebuds/encode
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode {:command-id "+\\x04"})
+; #object[Number]
+#object [Uint8Array 0 6 0 43 92 120 48 52]
+cljs꞉webserial-starter.devices.freebuds꞉> 
+nil
+cljs꞉webserial-starter.devices.freebuds꞉> 
+#'webserial-starter.devices.freebuds/encode
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode {:command-id "+\\x04"})
+#object [Uint8Array 0 6 0 43 92 120 48 52 0 0]
+cljs꞉webserial-starter.devices.freebuds꞉> 
+#'webserial-starter.devices.freebuds/encode
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode {:command-id "+\\x04"})
+; 16331
+#object [Uint8Array 0 6 0 43 92 120 48 52 0 0]
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode {:command-id "+␄"})
+; "crc16-value: " 11185
+#object [Uint8Array 0 5 0 43 226 144 132 0 0]
+cljs꞉webserial-starter.devices.freebuds꞉> 
+; nREPL Connection was closed
+; Connecting using "shadow-cljs" project type.
+; You can make Calva auto-select this.
+;   - See https://calva.io/connect-sequences/
+; 
+
+; Connecting ...
+; Reading port file: file:///Users/okilimnik/Projects/webserial-starter/.shadow-cljs/nrepl.port ...
+; Using host:port localhost:56835 ...
+; Hooking up nREPL sessions ...
+; Connected session: clj
+; Evaluating code from settings: 'calva.autoEvaluateCode.onConnect.clj'
+nil
+clj꞉shadow.user꞉> 
+; Creating cljs repl session...
+; Connecting cljs repl: shadow-cljs...
+; Connected shadow-cljs runtime: 4, Chrome 537.36 [MacIntel], host: browser
+; Connected session: cljs, repl: :app
+; TIPS: You can choose which REPL to use (clj or cljs):
+;    *Calva: Toggle REPL connection*
+;    (There is a button in the status bar for this)
+; Evaluating code from settings: 'calva.autoEvaluateCode.onConnect.cljs'
+nil
+cljs꞉user꞉> 
+; Initialized shadow-cljs runtime status notifications
+; Evaluating file: freebuds.cljs
+#'webserial-starter.devices.freebuds/encode
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode {:command-id "+␄"})
+:repl/exception!
+; 
+; 
+; Execution error (RangeError) at (<cljs repl>:1).
+; offset is out of bounds
+cljs꞉webserial-starter.devices.freebuds꞉> 
+#'webserial-starter.devices.freebuds/encode
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode {:command-id "+␄"})
+; "crc16-value: " 11185
+; "hex: " "0005002be290840000"
+#object [Uint8Array 0 5 0 43 226 144 132 0 0]
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode {:command-id "+␄"})
+; "crc16-value: " 11185
+; "hex: " "0005002be290840000"
+#object [Uint8Array 0 5 0 43 226 144 132 0 0]
+cljs꞉webserial-starter.devices.freebuds꞉> 
+#'webserial-starter.devices.freebuds/encode
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode {:command-id "+␄"})
+; "crc16-value: " 30765
+; "hex: " "5a05002be290840000"
+#object [Uint8Array 90 5 0 43 226 144 132 0 0]
+cljs꞉webserial-starter.devices.freebuds꞉> 
+#'webserial-starter.devices.freebuds/encode
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode {:command-id "+␄"})
+; "crc16-value: " 30765
+; "hex: " "5a05002be290840000"
+#object [Uint8Array 90 5 0 43 226 144 132 0 0]
+cljs꞉webserial-starter.devices.freebuds꞉> 
+#'webserial-starter.devices.freebuds/encode
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode {:command-id "+␄"})
+; "crc16-value: " 30765
+:repl/exception!
+; 
+; 
+; Execution error (TypeError) at (<cljs repl>:1).
+; crc16_value.toHex is not a function
+cljs꞉webserial-starter.devices.freebuds꞉> 
+#'webserial-starter.devices.freebuds/encode
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode {:command-id "+␄"})
+; "crc16-value: " 30765
+; "crc16-value hex: " "2d"
+; "hex: " "5a05002be290842d00"
+#object [Uint8Array 90 5 0 43 226 144 132 45 0]
+cljs꞉webserial-starter.devices.freebuds꞉> 
+#'webserial-starter.devices.freebuds/encode
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode {:command-id "+␄"})
+:repl/exception!
+; 
+; 
+; Execution error (TypeError) at (<cljs repl>:1).
+; Cannot convert undefined to a BigInt
+cljs꞉webserial-starter.devices.freebuds꞉> 
+#'webserial-starter.devices.freebuds/encode
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode {:command-id "+␄"})
+:repl/exception!
+; 
+; 
+; Execution error (TypeError) at (<cljs repl>:1).
+; BigInt is not a constructor
+cljs꞉webserial-starter.devices.freebuds꞉> 
+#'webserial-starter.devices.freebuds/encode
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode {:command-id "+␄"})
+; "crc16-value: " #object[Uint8Array 45,120,0,0,0,0,0,0]
+; "crc16-value hex: " "2d78000000000000"
+:repl/exception!
+; 
+; 
+; Execution error (RangeError) at (<cljs repl>:1).
+; offset is out of bounds
+cljs꞉webserial-starter.devices.freebuds꞉> 
+#'webserial-starter.devices.freebuds/encode
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode {:command-id "+␄"})
+; "crc16-value: " #object[Uint8Array 45,120]
+; "crc16-value hex: " "2d78"
+; "hex: " "5a05002be290842d78"
+#object [Uint8Array 90 5 0 43 226 144 132 45 120]
+cljs꞉webserial-starter.devices.freebuds꞉> 
+nil
+cljs꞉webserial-starter.devices.freebuds꞉> 
+#'webserial-starter.devices.freebuds/encode
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode {:command-id "+␄"})
+:repl/exception!
+; 
+; 
+; Execution error (TypeError) at (<cljs repl>:1).
+; First argument to DataView constructor must be an ArrayBuffer
+cljs꞉webserial-starter.devices.freebuds꞉> 
+nil
+cljs꞉webserial-starter.devices.freebuds꞉> 
+#'webserial-starter.devices.freebuds/encode
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode {:command-id "+␄"})
+; "crc16-value: " 45
+:repl/exception!
+; 
+; 
+; Execution error (TypeError) at (<cljs repl>:1).
+; checksum.toHex is not a function
+cljs꞉webserial-starter.devices.freebuds꞉> 
+#'webserial-starter.devices.freebuds/encode
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode {:command-id "+␄"})
+:repl/exception!
+; 
+; 
+; Execution error (TypeError) at (<cljs repl>:1).
+; Constructor ArrayBuffer requires 'new'
+cljs꞉webserial-starter.devices.freebuds꞉> 
+#'webserial-starter.devices.freebuds/encode
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode {:command-id "+␄"})
+; "crc16-value: " #object[Uint8Array 120,45]
+; "crc16-value hex: " "782d"
+; "hex: " "5a05002be29084782d"
+#object [Uint8Array 90 5 0 43 226 144 132 120 45]
+cljs꞉webserial-starter.devices.freebuds꞉> 
+nil
+cljs꞉webserial-starter.devices.freebuds꞉> 
+#'webserial-starter.devices.freebuds/encode
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode {:command-id "+␄"})
+; "crc16-value: " #object[Uint8Array 120,45]
+; "crc16-value hex: " "782d"
+; "hex: " "5a05002be29084782d"
+#object [Uint8Array 90 5 0 43 226 144 132 120 45]
+cljs꞉webserial-starter.devices.freebuds꞉> 
+nil
+cljs꞉webserial-starter.devices.freebuds꞉> 
+#'webserial-starter.devices.freebuds/encode
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode {:command-id "+␄"})
+; "crc16-value: " #object[Uint8Array 120,45]
+; "crc16-value hex: " "782d"
+; "hex: " "5a05002be29084782d"
+#object [Uint8Array 90 5 0 43 226 144 132 120 45]
+cljs꞉webserial-starter.devices.freebuds꞉> 
+; shadow-cljs runtime disconnected: 4 Chrome 537.36 [MacIntel]
+; shadow-cljs runtime connected: 45, Chrome 537.36 [MacIntel]
+; shadow-cljs runtime disconnected: 45 Chrome 537.36 [MacIntel]
+; shadow-cljs runtime connected: 46, Chrome 537.36 [MacIntel]
+; shadow-cljs runtime disconnected: 46 Chrome 537.36 [MacIntel]
+; shadow-cljs runtime connected: 47, Chrome 537.36 [MacIntel]
+#'webserial-starter.devices.freebuds/encode
+cljs꞉webserial-starter.devices.freebuds꞉> 
+; shadow-cljs runtime disconnected: 47 Chrome 537.36 [MacIntel]
+; shadow-cljs runtime connected: 49, Chrome 537.36 [MacIntel]
+#'webserial-starter.devices.freebuds/encode
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode {:command-id "+␄"})
+; "built-params: " #object[Uint8Array ]
+; "built-command: " #object[Uint8Array 43,226,144,132]
+; "crc16-value: " #object[Uint8Array 120,45]
+; "crc16-value hex: " "782d"
+; "hex: " "5a05002be29084782d"
+#object [Uint8Array 90 5 0 43 226 144 132 120 45]
+cljs꞉webserial-starter.devices.freebuds꞉> 
+#'webserial-starter.devices.freebuds/encode
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode {:command-id "+␄"})
+; "command-id: " "+␄"
+; "built-params: " #object[Uint8Array ]
+; "built-command: " #object[Uint8Array 43,226,144,132]
+; "crc16-value: " #object[Uint8Array 120,45]
+; "crc16-value hex: " "782d"
+; "hex: " "5a05002be29084782d"
+#object [Uint8Array 90 5 0 43 226 144 132 120 45]
+cljs꞉webserial-starter.devices.freebuds꞉> 
+; shadow-cljs runtime disconnected: 51 Chrome 537.36 [MacIntel]
+; shadow-cljs runtime connected: 55, Chrome 537.36 [MacIntel]
+; shadow-cljs runtime disconnected: 55 Chrome 537.36 [MacIntel]
+; shadow-cljs runtime connected: 56, Chrome 537.36 [MacIntel]
+; shadow-cljs runtime disconnected: 56 Chrome 537.36 [MacIntel]
+; shadow-cljs runtime connected: 57, Chrome 537.36 [MacIntel]
+; shadow-cljs runtime disconnected: 57 Chrome 537.36 [MacIntel]
+; shadow-cljs runtime connected: 58, Chrome 537.36 [MacIntel]
+#'webserial-starter.devices.freebuds/encode
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode {:command-id "+␄"})
+; "command-id: " "+␄"
+; "built-params: " #object[Uint8Array ]
+; "built-command: " #object[Uint8Array 43,226,144,132]
+; "crc16-value: " #object[Uint8Array 221,39]
+; "crc16-value hex: " "dd27"
+; "hex: " "5a0005002be29084dd27"
+#object [Uint8Array 90 0 5 0 43 226 144 132 221 39]
+cljs꞉webserial-starter.devices.freebuds꞉> 
+#'webserial-starter.devices.freebuds/encode
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode {:command-id "+␄"})
+; "command-id: " "+␄"
+; "built-params: " #object[Uint8Array ]
+; "built-command: " #object[Uint8Array 43,226,144,132]
+; "header: " #object[Uint8Array 90,0,5,0]
+; "crc16-value: " #object[Uint8Array 221,39]
+; "crc16-value hex: " "dd27"
+; "hex: " "5a0005002be29084dd27"
+#object [Uint8Array 90 0 5 0 43 226 144 132 221 39]
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode {:command-id "+␄"})
+; "command-id: " "+␄"
+; "built-params: " #object[Uint8Array ]
+; "built-command: " #object[Uint8Array 43,226,144,132]
+; "header: " #object[Uint8Array 90,0,5,0]
+; "crc16-value: " #object[Uint8Array 221,39]
+; "crc16-value hex: " "dd27"
+; "hex: " "5a0005002be29084dd27"
+#object [Uint8Array 90 0 5 0 43 226 144 132 221 39]
+cljs꞉webserial-starter.devices.freebuds꞉> 
+nil
+cljs꞉webserial-starter.devices.freebuds꞉> 
+#'webserial-starter.devices.freebuds/encode
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode {:command-id "+␄"})
+; "command-id: " "+␄"
+:repl/exception!
+; 
+; 
+; Execution error (TypeError) at (<cljs repl>:1).
+; Failed to execute 'decode' on 'TextDecoder': parameter 1 is not of type 'ArrayBuffer'.
+cljs꞉webserial-starter.devices.freebuds꞉> 
+nil
+cljs꞉webserial-starter.devices.freebuds꞉> 
+#'webserial-starter.devices.freebuds/encode
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode {:command-id "+␄"})
+; "command-id: " "+␄"
+; "decoded command-id: " "+"
+; "built-params: " #object[Uint8Array ]
+; "built-command: " #object[Uint8Array 43,226,144,132]
+; "header: " #object[Uint8Array 90,0,5,0]
+; "crc16-value: " #object[Uint8Array 221,39]
+; "crc16-value hex: " "dd27"
+; "hex: " "5a0005002be29084dd27"
+#object [Uint8Array 90 0 5 0 43 226 144 132 221 39]
+cljs꞉webserial-starter.devices.freebuds꞉> 
+#'webserial-starter.actions/interceptor
+cljs꞉webserial-starter.actions꞉> 
+; shadow-cljs runtime disconnected: 63 Chrome 537.36 [MacIntel]
+; shadow-cljs runtime connected: 73, Chrome 537.36 [MacIntel]
+#'webserial-starter.devices.freebuds/encode
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode {:command-id "+"})
+; "command-id: " "+"
+; "built-params: " #object[Uint8Array ]
+; "built-command: " #object[Uint8Array 43,4]
+; "header: " #object[Uint8Array 90,0,3,0]
+; "crc16-value: " #object[Uint8Array 99,199]
+; "crc16-value hex: " "63c7"
+; "hex: " "5a0003002b0463c7"
+#object [Uint8Array 90 0 3 0 43 4 99 199]
+cljs꞉webserial-starter.devices.freebuds꞉> 
+; shadow-cljs runtime disconnected: 73 Chrome 537.36 [MacIntel]
+; shadow-cljs runtime connected: 77, Chrome 537.36 [MacIntel]
+{:nexus/system->state #object [cljs$core$deref], :nexus/placeholders {:dom/event #object [Function], :event/key #object [Function], :event.target/value #object [Function], :event.target/checked #object [Function]}, :nexus/effects {:store/save #object [cljs.core.MetaFn], :connection/init #object [Function], :event/prevent-default #object [Function], :connection/close #object [Function], :connection/connect #object [Function], :connection/select-port #object [Function], :connection/send #object [Function], :toolbar/click #object [Function], :connection/monitor #object [Function], :dom/insert-text #object [Function]}, :nexus/actions {:counter/dec #object [Function], :flow-control/change #object [Function], :connect-modal/on-mount #object [Function], :connection/prepend #object [Function], :connection/clear-messages #object [Function], :connection/append #object [Function], :stop-bits/change #object [Function], :store/assoc-in #object [Function], :ascii-input/on-key-down #object [Function], :new-lines/change #object [Function], :parity/change #object [Function], :input/on-key-down #object [Function], :buffer-size/change #object [Function], :data-bits/change #object [Function], :input/change #object [Function], :counter/inc #object [Function], :input/set #object [Function], :input/keyup #object [Function], :store/conj-in #object [Function], :main/console-scroll #object [Function], :baud-rate/change #object [Function]}, :nexus/interceptors [{:id :nexus.inspector/inspector, :before-dispatch #object [Function], :after-dispatch #object [Function], :after-action #object [Function], :before-effect #object [Function]}]}
+cljs꞉webserial-starter.actions꞉> 
+; shadow-cljs runtime disconnected: 77 Chrome 537.36 [MacIntel]
+; shadow-cljs runtime connected: 80, Chrome 537.36 [MacIntel]
+; shadow-cljs runtime disconnected: 80 Chrome 537.36 [MacIntel]
+; shadow-cljs runtime connected: 81, Chrome 537.36 [MacIntel]
+; shadow-cljs runtime disconnected: 81 Chrome 537.36 [MacIntel]
+; shadow-cljs runtime connected: 82, Chrome 537.36 [MacIntel]
+; shadow-cljs runtime disconnected: 82 Chrome 537.36 [MacIntel]
+; shadow-cljs runtime connected: 83, Chrome 537.36 [MacIntel]
+#'webserial-starter.devices.freebuds/encode
+cljs꞉webserial-starter.devices.freebuds꞉> 
+; shadow-cljs runtime disconnected: 83 Chrome 537.36 [MacIntel]
+; shadow-cljs runtime connected: 86, Chrome 537.36 [MacIntel]
+#'webserial-starter.devices.freebuds/encode
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode {:command-id "+"}); shadow-cljs runtime disconnected: 88 Chrome 537.36 [MacIntel]
+; shadow-cljs runtime connected: 89, Chrome 537.36 [MacIntel]
+; shadow-cljs runtime disconnected: 89 Chrome 537.36 [MacIntel]
+; shadow-cljs runtime connected: 90, Chrome 537.36 [MacIntel]
+; shadow-cljs runtime disconnected: 90 Chrome 537.36 [MacIntel]
+; shadow-cljs runtime connected: 91, Chrome 537.36 [MacIntel]
+; shadow-cljs runtime disconnected: 91 Chrome 537.36 [MacIntel]
+; shadow-cljs runtime connected: 92, Chrome 537.36 [MacIntel]
+#'webserial-starter.devices.freebuds/encode
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode {:command-id "+␁␁␁"})
+; "cmd: " {:command-id "+␁␁␁"}
+:repl/exception!
+; 
+; 
+; Execution error (TypeError) at (<cljs repl>:1).
+; s.substring is not a function
+cljs꞉webserial-starter.devices.freebuds꞉> 
+:repl/exception!
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode "+␁␁␁")
+; "cmd: " "+␁␁␁"
+; "command-id: " "+"
+; "parameters: " "␁␁␁"
+; "built-params: " #object[Uint8Array 226,144,129,226,144,129,226,144,129]
+; "built-command: " #object[Uint8Array 43,4]
+; "header: " #object[Uint8Array 90,0,12,0]
+; "crc16-value: " #object[Uint8Array 216,193]
+; "crc16-value hex: " "d8c1"
+; "hex: " "5a000c002b04e29081e29081e29081d8c1"
+#object [Uint8Array 90 0 12 0 43 4 226 144 129 226 144 129 226 144 129 216 193]
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode "+␄␁␁␁␊")
+; "cmd: " "+␄␁␁␁␊"
+; "command-id: " "+␄"
+; "parameters: " "␁␁␁␊"
+; "built-params: " #object[Uint8Array 226,144,129,226,144,129,226,144,129,226,144,138]
+; "built-command: " #object[Uint8Array 43,226,144,132]
+; "header: " #object[Uint8Array 90,0,17,0]
+; "crc16-value: " #object[Uint8Array 24,193]
+; "crc16-value hex: " "18c1"
+; "hex: " "5a0011002be29084e29081e29081e29081e2908a18c1"
+#object [Uint8Array 90 0 17 0 43 226 144 132 226 144 129 226 144 129 226 144 129 226 144 138 24 193]
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode "+␄␁␁␁")
+; "cmd: " "+␄␁␁␁"
+; "command-id: " "+␄"
+; "parameters: " "␁␁␁"
+; "built-params: " #object[Uint8Array 226,144,129,226,144,129,226,144,129]
+; "built-command: " #object[Uint8Array 43,226,144,132]
+; "header: " #object[Uint8Array 90,0,14,0]
+; "crc16-value: " #object[Uint8Array 223,243]
+; "crc16-value hex: " "dff3"
+; "hex: " "5a000e002be29084e29081e29081e29081dff3"
+#object [Uint8Array 90 0 14 0 43 226 144 132 226 144 129 226 144 129 226 144 129 223 243]
+cljs꞉webserial-starter.devices.freebuds꞉> 
+; Evaluating file: ascii_encoder.cljs
+#'webserial-starter.ascii-encoder/encode-with-html
+cljs꞉webserial-starter.ascii-encoder꞉> 
+(decode "+␄␁␁␁")
+"+␁␁␁"
+cljs꞉webserial-starter.ascii-encoder꞉> 
+; Evaluating file: freebuds.cljs
+#'webserial-starter.devices.freebuds/encode
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode "+␄␁␁␁"); shadow-cljs runtime disconnected: 99 Chrome 537.36 [MacIntel]
+; shadow-cljs runtime connected: 108, Chrome 537.36 [MacIntel]
+; shadow-cljs runtime disconnected: 108 Chrome 537.36 [MacIntel]
+; shadow-cljs runtime connected: 109, Chrome 537.36 [MacIntel]
+; shadow-cljs runtime disconnected: 109 Chrome 537.36 [MacIntel]
+; shadow-cljs runtime connected: 110, Chrome 537.36 [MacIntel]
+; Evaluating file: ascii_encoder.cljs
+#'webserial-starter.ascii-encoder/encode-with-html
+cljs꞉webserial-starter.ascii-encoder꞉> 
+(encode "␀")
+"␀"
+cljs꞉webserial-starter.ascii-encoder꞉> 
+(encode "␄")
+"␄"
+cljs꞉webserial-starter.ascii-encoder꞉> 
+(encode "+␄")
+"+␄"
+cljs꞉webserial-starter.ascii-encoder꞉> 
+(encode ["+" \␄])
+:repl/exception!
+; 
+; 
+; Execution error (TypeError) at (<cljs repl>:1).
+; msg.replace is not a function
+cljs꞉webserial-starter.ascii-encoder꞉> 
+(encode (apply str ["+" 0x04]))
+"+␄"
+cljs꞉webserial-starter.ascii-encoder꞉> 
+(encode (apply str ["+" 0x04]))
+"+4"
+cljs꞉webserial-starter.ascii-encoder꞉> 
+(encode "+\x04")
+"+\\x04"
+cljs꞉webserial-starter.ascii-encoder꞉> 
+cljs꞉webserial-starter.ascii-encoder꞉> 
+(encode "+\x04")
+4
+; 
+; [line 1, col 13] Unsupported escape character: \x.
+; [line 1, col 2] Unmatched delimiter ).cljs꞉webserial-starter.ascii-encoder꞉> 
+(encode "+\\x04")
+
+4
+; 
+; [line 1, col 13] Unsupported escape character: \x.
+; [line 1, col 2] Unmatched delimiter ).cljs꞉webserial-starter.ascii-encoder꞉> 
+(encode "+\\x04")
+
+"+\\x04"
+cljs꞉webserial-starter.ascii-encoder꞉> 
+; shadow-cljs runtime disconnected: 110 Chrome 537.36 [MacIntel]
+; shadow-cljs runtime connected: 122, Chrome 537.36 [MacIntel]
+; shadow-cljs runtime disconnected: 122 Chrome 537.36 [MacIntel]
+; shadow-cljs runtime connected: 123, Chrome 537.36 [MacIntel]
+; shadow-cljs runtime disconnected: 123 Chrome 537.36 [MacIntel]
+; shadow-cljs runtime connected: 124, Chrome 537.36 [MacIntel]
+; shadow-cljs runtime disconnected: 124 Chrome 537.36 [MacIntel]
+; shadow-cljs runtime connected: 125, Chrome 537.36 [MacIntel]
+; shadow-cljs runtime disconnected: 125 Chrome 537.36 [MacIntel]
+; shadow-cljs runtime connected: 126, Chrome 537.36 [MacIntel]
+; shadow-cljs runtime disconnected: 126 Chrome 537.36 [MacIntel]
+; shadow-cljs runtime connected: 127, Chrome 537.36 [MacIntel]
+; shadow-cljs runtime disconnected: 127 Chrome 537.36 [MacIntel]
+; shadow-cljs runtime connected: 128, Chrome 537.36 [MacIntel]
+; shadow-cljs runtime disconnected: 128 Chrome 537.36 [MacIntel]
+; shadow-cljs runtime connected: 129, Chrome 537.36 [MacIntel]
+; shadow-cljs runtime disconnected: 129 Chrome 537.36 [MacIntel]
+; shadow-cljs runtime connected: 130, Chrome 537.36 [MacIntel]
+; shadow-cljs runtime disconnected: 130 Chrome 537.36 [MacIntel]
+; shadow-cljs runtime connected: 131, Chrome 537.36 [MacIntel]
+; shadow-cljs runtime disconnected: 131 Chrome 537.36 [MacIntel]
+; shadow-cljs runtime connected: 132, Chrome 537.36 [MacIntel]
+; Evaluating file: ascii_encoder.cljs
+#'webserial-starter.ascii-encoder/encode-with-html
+cljs꞉webserial-starter.ascii-encoder꞉> 
+(decode "␁␁␁")
+""
+cljs꞉webserial-starter.ascii-encoder꞉> 
+; Evaluating file: freebuds.cljs
+#'webserial-starter.devices.freebuds/encode
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode "+")
+; "built-params: " #object[Uint8Array 1,1,1]
+; "built-command: " #object[Uint8Array 43,4]
+; "header: " #object[Uint8Array 90,0,6,0]
+; "crc16-value: " #object[Uint8Array 127,143]
+; "hex: " "5a0006002b040101017f8f"
+#object [Uint8Array 90 0 6 0 43 4 1 1 1 127 143]
+cljs꞉webserial-starter.devices.freebuds꞉> 
+; Evaluating file: ascii_encoder.cljs
+#'webserial-starter.ascii-encoder/encode-with-html
+cljs꞉webserial-starter.ascii-encoder꞉> 
+(decode "␁␁␀")
+" "
+cljs꞉webserial-starter.ascii-encoder꞉> 
+; Evaluating file: freebuds.cljs
+#'webserial-starter.devices.freebuds/encode
+cljs꞉webserial-starter.devices.freebuds꞉> 
+(encode "+ ")
+; "built-params: " #object[Uint8Array 1,1,0]
+; "built-command: " #object[Uint8Array 43,4]
+; "header: " #object[Uint8Array 90,0,6,0]
+; "crc16-value: " #object[Uint8Array 127,142]
+; "hex: " "5a0006002b040101007f8e"
+#object [Uint8Array 90 0 6 0 43 4 1 1 0 127 142]
+cljs꞉webserial-starter.devices.freebuds꞉> 
+; shadow-cljs runtime disconnected: 132 Chrome 537.36 [MacIntel]
+; shadow-cljs runtime connected: 141, Chrome 537.36 [MacIntel]
+; nREPL Connection was closed

@@ -1,7 +1,7 @@
 (ns webserial-starter.ui
   (:require
    [webserial-starter.actions :refer [interceptor]]
-   [webserial-starter.ascii-encoder :refer [encode-with-html]]
+   [webserial-starter.ascii-encoder :refer [encode encode-with-html]]
    [webserial-starter.utils :refer [class-names]]))
 
 (defn render-app [{:keys [input connection new-lines?] :as state}]
@@ -33,7 +33,7 @@
       [:webserial/ascii-input
        {:id "input"
         :on-change [[:input/change [:event.target/value]]]
-        :content input
+        :content (encode input)
         :on-key-down [[:input/on-key-down [:dom/event] [:event/key]]]
         :on-key-up [[:input/keyup [:event/key] [:event.target/value]]]
         :placeholder "Enter data. Press RETURN to send!"

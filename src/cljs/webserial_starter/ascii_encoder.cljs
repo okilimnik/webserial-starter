@@ -17,16 +17,16 @@
     :else (js/String.fromCodePoint (+ c 9216))))
 
 (defn encode [msg]
-  (.replace msg #"[\x00-\x1F\x7F]"
-            (fn [m] (substitute (.charCodeAt m 0)))))
+  (.replaceAll msg (js/RegExp. "[\\x00-\\x1F\\x7F]" "g")
+               (fn [m] (substitute (.charCodeAt m 0)))))
 
 (defn decode [msg]
-  (.replace msg #"[\u2400-\u241F\u2421]"
-            (fn [m]
-              (js/String.fromCodePoint
-               (if (= m "␡")
-                 127
-                 (- (.charCodeAt m 0) 9216))))))
+  (.replaceAll msg (js/RegExp. "[\\u2400-\\u241F\\u2421]" "g")
+               (fn [m]
+                 (js/String.fromCodePoint
+                  (if (= m "␡")
+                    127
+                    (- (.charCodeAt m 0) 9216))))))
 
 (defn encode-with-html [msg]
   (.replaceAll msg (js/RegExp. "[\\x00-\\x1F\\x7F\\u2400-\\u241F\\u2421]" "g")

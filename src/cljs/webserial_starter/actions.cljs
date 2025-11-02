@@ -115,7 +115,7 @@
 (nxr/register-action!
  :input/change
  (fn [_ value]
-   [[:store/assoc-in [:input] value]]))
+   [[:store/assoc-in [:input] (decode value)]]))
 
 (nxr/register-action!
  :counter/inc
@@ -251,9 +251,9 @@
        (when-let [writable (j/get port :writable)]
          (let [writer (j/call writable :getWriter)
                message (if (= (-> state :connection :id) freebuds/DEVICE-ID)
-                         (freebuds/encode {:command-id cmd})
+                         (freebuds/encode cmd)
                          (j/call encoder :encode cmd))]
-           (js/console.log "sending: " message)
+           (js/console.log "sending: " (str message))
            (-> (j/call writer :write message)
                (p/catch js/console.error)
                (p/finally #(j/call writer :releaseLock)))))))))
@@ -289,25 +289,26 @@
    (j/call js/document :execCommand "insertText" false value)))
 
 (defn interceptor [state dom-event]
-  (let [{:keys [history history-index prepend append wip]} state]
+  (let [{:keys [history history-index wip connection]} state
+        {:keys [prepend append]} connection]
     (case (get shortcuts (key-combo dom-event))
 
       :CLEAR [[:event/prevent-default dom-event]
               [:connection/clear-messages]]
 
-      :IGNORE_LF [[:dom/insert-text "␊"]]
+      :IGNORE_LF [[:dom/insert-text \␊]]
 
       :SEND (let [target-value (j/get-in dom-event [:target :value])
-                  cmd (str prepend target-value append)]
+                  cmd (str prepend (:input state) append)]
               (vec
                (concat
                 (when-not (= (peek history) target-value)
                   [[:store/conj-in [:history] target-value]])
                 [[:event/prevent-default dom-event]
-                 [:input/set (j/get dom-event :target) ""] 
+                 [:input/set (j/get dom-event :target) ""]
                  [:counter/inc [:history-index]]
                  [:store/assoc-in [:wip] ""]
-                 [:connection/send (decode cmd)]])))
+                 [:connection/send cmd]])))
 
       :UP (when-not (zero? history-index)
             [[:input/set (j/get dom-event :target) (nth history (dec history-index))]

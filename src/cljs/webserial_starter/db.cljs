@@ -17,7 +17,7 @@
    :signals {}
    :messages []
    :prepend ""
-   :append \␊})
+   :append ""})
 
 (defonce store (atom {:wip ""
                       :input ""
