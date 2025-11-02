@@ -1,11 +1,11 @@
 (ns webserial-starter.actions
   (:require
-   ["@finwo/crc16-xmodem" :refer [crc16b]]
    [applied-science.js-interop :as j]
    [cemerick.url :refer [url]]
    [nexus.registry :as nxr]
    [promesa.core :as p]
    [webserial-starter.ascii-encoder :refer [decode]]
+   [webserial-starter.devices.freebuds :as freebuds]
    [webserial-starter.shortcuts :refer [key-combo shortcuts]]
    [webserial-starter.utils :refer [decoder encoder get-device-id]]))
 
@@ -250,10 +250,11 @@
      (when-let [port (:port connection)]
        (when-let [writable (j/get port :writable)]
          (let [writer (j/call writable :getWriter)
-               message (js/Buffer.from cmd)
-               message-with-checksum (j/call message :writeUInt16BE (crc16b message) (- (.-length message) 2))]
-           (js/console.log "sending: " message-with-checksum)
-           (-> (j/call writer :write message-with-checksum)
+               message (if (= (-> state :connection :id) freebuds/DEVICE-ID)
+                         (freebuds/encode {:command-id cmd})
+                         (j/call encoder :encode cmd))]
+           (js/console.log "sending: " message)
+           (-> (j/call writer :write message)
                (p/catch js/console.error)
                (p/finally #(j/call writer :releaseLock)))))))))
 
