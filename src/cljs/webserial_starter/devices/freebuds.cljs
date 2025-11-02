@@ -49,9 +49,7 @@
   (let [command-id (subs cmd 0 2)
         parameters (subs cmd 2)
         built-params (j/call encoder :encode parameters)
-        _ (prn "built-params: " built-params)
         built-command (j/call encoder :encode command-id)
-        _ (prn "built-command: " built-command)
 
         body (js/Uint8Array. (+ (.-length built-command) (.-length built-params)))
         _ (.set body built-command)
@@ -62,17 +60,14 @@
         _ (.setInt16 (js/DataView. buffer) 1 (inc (.-length body)) false) ;; Length + 1
         _ (.setInt8 (js/DataView. buffer) 3 0x00 false)                   ;; [NUL]
         header (js/Uint8Array. buffer)
-        _ (prn "header: " header)
 
         message (js/Uint8Array. (+ (.-length header) (.-length body)))
         _ (.set message header)
         _ (.set message body (.-length header))
 
         checksum (crc16 message)
-        _ (prn "crc16-value: " checksum)
 
         result (js/Uint8Array. (+ (.-length message) 2))
         _ (.set result message)
         _ (.set result checksum (.-length message))]
-    (prn "hex: "  (.toHex result))
     result))
