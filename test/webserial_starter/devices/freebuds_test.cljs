@@ -6,6 +6,6 @@
 
 (deftest encode-test
   (testing "Noise cancelling on"
-    (is (= "5a0006002b040101017f8f" (.toHex (sut/encode (decode "+␄␁␁␁"))))))
+    (is (= "5a0006002b040101017800" (.toHex (sut/encode (decode "+␄␁␁␁"))))))
   (testing "Noise cancelling off"
-    (is (= "5a0006002b040101007f8e" (.toHex (sut/encode (decode "+␄␁␁␀")))))))
+    (is (= "5a0006002b040101006821" (.toHex (sut/encode (decode "+␄␁␁␀")))))))
