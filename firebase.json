@@ -1,0 +1,19 @@
+{
+  "hosting": {
+    "public": "resources/public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**",
+      "resources/public/app-js/cljs-runtime",
+      "resources/public/portfolio-js",
+      "resources/public/portfolio.html"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

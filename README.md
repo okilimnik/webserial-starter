@@ -1,8 +1,8 @@
 Work in Progress
 
-WebSerial
+WebSerial 
 =========
-#### A browser based Serial Port application
+#### A browser based Serial Port application: https://webserial-8b7dd.web.app/
 #### Ported from https://github.com/williamkapke/webserial into Clojurescript and Replicant
 
 <img src="screenshot-1.png" width="640">
