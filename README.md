@@ -9,12 +9,15 @@ WebSerial
 <img src="screenshot-2.png" width="640">
 
 ### Huawei Freebuds commands
-https://mmk.pw/en/posts/freebuds-4i-proto/
-
-Noise cancellation:
+Noise cancelling on:
 ```script
-+[EOT]
++␄␁␁␁
 ```
+Noise cancelling off:
+```script
++␄␁␁␀
+```
+Look for more commands in the original [article](https://mmk.pw/en/posts/freebuds-4i-proto/)
 
 ### Tests
 Running tests require headless Chrome installed.
