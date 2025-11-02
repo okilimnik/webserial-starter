@@ -1,5 +1,3 @@
-Work in Progress
-
 WebSerial 
 =========
 #### A browser based Serial Port application: https://webserial-8b7dd.web.app/
