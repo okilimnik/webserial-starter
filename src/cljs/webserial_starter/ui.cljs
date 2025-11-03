@@ -12,7 +12,10 @@
       [:h1 "WebSerial"]
       [:span {:id "cred"} " by "
        [:a {:href "https://github.com/okilimnik/webserial-starter"
-            :target "_blank"} "Oleh Kylymnyk"]]
+            :target "_blank"} "Oleh Kylymnyk."]
+       [:span#credits " The original version by William Kapke is "
+        [:a {:href "https://github.com/williamkapke/webserial"
+             :target "_blank"} "here"]]]
       [:aside
        [:label {:for "checkbox"} "New Lines"]
        [:input {:id "checkbox"

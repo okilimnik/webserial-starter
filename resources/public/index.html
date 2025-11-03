@@ -3,6 +3,27 @@
   <head>
     <title>WebSerial</title>
     <link rel="stylesheet" type="text/css" href="/styles.css">
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
+      import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-analytics.js";
+      // TODO: Add SDKs for Firebase products that you want to use
+      // https://firebase.google.com/docs/web/setup#available-libraries
+      // Your web app's Firebase configuration
+      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+      const firebaseConfig = {
+        apiKey: "AIzaSyAqvCrqT0ta4mqf9ywOtkxRiDF-flj_hzI",
+        authDomain: "webserial-8b7dd.firebaseapp.com",
+        projectId: "webserial-8b7dd",
+        storageBucket: "webserial-8b7dd.firebasestorage.app",
+        messagingSenderId: "857944680197",
+        appId: "1:857944680197:web:d78cc28f66681c044ff96c",
+        measurementId: "G-P5ZPRYSLFS"
+      };
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
+    </script>
   </head>
   <body>
     <div id="app-container"></div>
