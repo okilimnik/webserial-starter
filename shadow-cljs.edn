@@ -1,4 +1,4 @@
-{:deps {:aliases [:dev :prod]}
+{:deps true
  :dev-http {8080 ["resources/public" "classpath:public"]}
  :builds
  {:dev
@@ -16,4 +16,4 @@
   :karma-test
   {:target    :karma
    :ns-regexp "-test$"
-   :output-to "resources/test/karma-test.js"}}}}
+   :output-to "resources/test/karma-test.js"}}}

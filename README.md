@@ -6,7 +6,8 @@ WebSerial
 <img src="screenshot-1.png" width="640">
 <img src="screenshot-2.png" width="640">
 
-### Huawei Freebuds commands
+### Huawei Freebuds commands (I have only this device to test it on):
+The header and the checksum are added for you, you need to type only a command and the parameters (with their length).
 Noise cancelling on:
 ```script
 +␄␁␁␁
