@@ -67,6 +67,11 @@
  (fn [_ _ dom-event]
    (j/call dom-event :preventDefault)))
 
+(nxr/register-effect!
+ :event/stop-propagation
+ (fn [_ _ dom-event]
+   (j/call dom-event :stopPropagation)))
+
 (nxr/register-action!
  :store/assoc-in
  (fn [_ path value]
@@ -135,6 +140,27 @@
        [[:connection/init device-id]]
        []))))
 
+(defn- global-key-down-interceptor [store dom-event]
+  (when (= (get shortcuts (key-combo dom-event)) :TOGGLE_CONNECTION)
+    (let [connection-opened? (-> @store :connection :open)]
+      (nxr/dispatch store nil (concat
+                               [[:event/prevent-default dom-event]
+                                [:event/stop-propagation dom-event]]
+                               (if connection-opened?
+                                 [[:connection/close]]
+                                 [[:connection/connect]]))))))
+
+(nxr/register-effect!
+ :app/on-mount
+ (fn [_ store]
+   (let [console-div (js/document.querySelector "#console")
+         output-div (js/document.querySelector "#output")
+         resize-observer (js/ResizeObserver. (fn []
+                                               (when (-> @store :scrolled-to-bottom)
+                                                 (js/setTimeout #(set! (.-scrollTop console-div) js/Number.MAX_SAFE_INTEGER) 100))))]
+     (j/call resize-observer :observe output-div))
+   (.addEventListener js/window "keydown" (partial global-key-down-interceptor store))))
+
 (nxr/register-action!
  :input/keyup
  (fn [_ k v]
@@ -155,11 +181,11 @@
 
 (nxr/register-action!
  :main/console-scroll
- (fn [_ e]
-   (let [scroll-point (+ (.. e -target -scrollTop)
-                         (.. e -target -clientHeight))
+ (fn [_ dom-event]
+   (let [scroll-point (+ (.. dom-event -target -scrollTop)
+                         (.. dom-event -target -clientHeight))
          scrolled-to-bottom? (>= (+ scroll-point 10)
-                                 (.. e -target -scrollHeight))]
+                                 (.. dom-event -target -scrollHeight))]
      [[:store/assoc-in [:scrolled-to-bottom] scrolled-to-bottom?]])))
 
 (nxr/register-action!
@@ -288,7 +314,7 @@
  (fn [_ _ value]
    (j/call js/document :execCommand "insertText" false value)))
 
-(defn interceptor [state dom-event]
+(defn ascii-input-interceptor [state dom-event]
   (let [{:keys [history history-index wip connection]} state
         {:keys [prepend append]} connection]
     (case (get shortcuts (key-combo dom-event))
@@ -325,6 +351,6 @@
 (nxr/register-action!
  :input/on-key-down
  (fn [state dom-event k]
-   (if-let [actions (interceptor state dom-event)]
+   (if-let [actions (ascii-input-interceptor state dom-event)]
      actions
      [[:ascii-input/on-key-down dom-event k]])))

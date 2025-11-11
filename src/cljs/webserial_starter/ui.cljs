@@ -1,12 +1,12 @@
 (ns webserial-starter.ui
   (:require
-   [webserial-starter.actions :refer [interceptor]]
+   [webserial-starter.actions :refer [ascii-input-interceptor]]
    [webserial-starter.ascii-encoder :refer [encode encode-with-html]]
    [webserial-starter.utils :refer [class-names]]))
 
 (defn render-app [{:keys [input connection new-lines?] :as state}]
   (let  [{:keys [messages]} connection]
-    [:div#app
+    [:div#app {:replicant/on-mount [[:app/on-mount]]}
 
      [:header
       [:h1 "WebSerial"]
@@ -25,7 +25,7 @@
       [:webserial/connect-modal state]]
 
      [:main#console
-      {:on {:scroll (fn [e] [:main/console-scroll e])}}
+      {:on {:scroll [[:main/console-scroll [:dom/event]]]}}
       [:section#output {:class (class-names {:newlines new-lines?})}
        (for [[idx message] (map-indexed vector messages)]
          [:pre {:replicant/key idx
@@ -40,7 +40,7 @@
         :on-key-down [[:input/on-key-down [:dom/event] [:event/key]]]
         :on-key-up [[:input/keyup [:event/key] [:event.target/value]]]
         :placeholder "Enter data. Press RETURN to send!"
-        :interceptor (partial interceptor state)}]
+        :interceptor (partial ascii-input-interceptor state)}]
       [:div#attribution.flex.justify-center
        [:div "© Oleh Kylymnyk"]
        [:a {:rel "license"

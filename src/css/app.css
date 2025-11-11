@@ -59,7 +59,7 @@ main {
     /*top: 32px;*/
     /*bottom: 4.5rem;*/
     overflow-y: scroll;
-    max-width: 100%
+    max-width: 100%;
 }
 
 #toolbar,
