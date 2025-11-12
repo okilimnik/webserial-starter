@@ -29,7 +29,7 @@
       [:section#output {:class (class-names {:newlines new-lines?})}
        (for [[idx message] (map-indexed vector messages)]
          [:pre {:replicant/key idx
-                :innerHTML (encode-with-html message)}])]]
+                :innerHTML (encode-with-html message new-lines?)}])]]
 
      [:footer
       [:webserial/toolbar state]
