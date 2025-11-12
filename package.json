@@ -4,7 +4,7 @@
         "watch-styles": "npx @tailwindcss/cli -i ./src/css/global.css -o ./resources/public/styles.css --watch",
         "build-styles": "npx @tailwindcss/cli -i ./src/css/global.css -o ./resources/public/styles.css",
         "watch-ui": "clojure -M:dev watch dev portfolio",
-        "test": "npx shadow-cljs compile karma-test && npx karma start",
+        "test": "clojure -M:test release karma-test && npx karma start",
         "build": "npm run build-styles && clojure -M:prod release prod"
     },
     "dependencies": {
